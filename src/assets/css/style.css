@@ -1,0 +1,33 @@
+.tooltip,
+.humidity-tooltip,
+.temp-tooltip {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.tooltip .tooltiptext,
+.humidity-tooltip .humidity-tooltiptext,
+.temp-tooltip .temp-tooltiptext {
+  visibility: hidden;
+  width: 100%;
+  bottom: 100%;
+  left: 10%;
+  margin-left: -60px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  font-size: 15px;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltip:hover .tooltiptext,
+.humidity-tooltip:hover .humidity-tooltiptext,
+.temp-tooltip:hover .temp-tooltiptext {
+  visibility: visible;
+}
