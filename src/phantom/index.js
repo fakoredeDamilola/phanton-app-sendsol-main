@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
+import RewardModal from '../components/RewardModal'
+import './style.css'
 
 // react-router components
 import { Redirect, Route, Switch, useNavigate, useLocation } from "react-router-dom";
@@ -10,6 +12,8 @@ const Phantom = () => {
   const [provider, setProvider] = useState();
   const [walletKey, setWalletKey] = useState();
   const [show, setShow] = useState(false);
+  const [showModal, setShowModal] = useState(false)
+  const [reward, setReward] = useState('Start Stake')
 
   const getProvider = () => {
     if ("solana" in window) {
@@ -59,6 +63,10 @@ const user = JSON.parse(localStorage.getItem("phantom_user"));
     }
   };
 
+  const chooseReward = () => {
+    setShowModal(true)
+  };
+
   return (
     <div>
       {provider && !walletKey && (
@@ -77,6 +85,25 @@ const user = JSON.parse(localStorage.getItem("phantom_user"));
 
       {provider && walletKey && (
         <div style={{ display: "flex", alignItems: "center" }}>
+          <button
+            style={{
+              fontSize: "16px",
+              padding: "15px",
+              fontWeight: "bold",
+              borderRadius: "5px",
+              margin: "15px auto",
+              marginInline: "10px"
+            }}
+            onClick={chooseReward}
+          >
+            {reward}
+          </button>
+          <RewardModal show={showModal} onClose={() => {setShowModal(false)}}>
+            <div className="modal-buttons">
+              <button onClick={() => {setReward('NFT STAKE'); setShowModal(false)}}>NFT Stake</button>
+              <button onClick={() => {setReward('MONITOR STAKE'); setShowModal(false)}}>MONITOR Stake</button>
+            </div>
+          </RewardModal>
           <button
             style={{
               fontSize: "16px",

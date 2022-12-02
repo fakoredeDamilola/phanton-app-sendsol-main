@@ -1,0 +1,13 @@
+.modal-buttons {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.modal-buttons button {
+    font-size: 14px;
+    padding: 7px;
+
+}
