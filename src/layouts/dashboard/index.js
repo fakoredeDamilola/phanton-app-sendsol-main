@@ -25,6 +25,7 @@ import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
 import Projects from "layouts/dashboard/components/Projects";
 import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
 import '../../assets/css/style.css';
+import StakingCard from './components/StakingCard'
 
 function Dashboard() {
   const { sales, tasks } = reportsLineChartData;
@@ -127,6 +128,7 @@ function Dashboard() {
         <Grid container spacing={3}>
           <Grid item xs={12} md={6} lg={3}>
             <MDBox mb={1.5}>
+              <StakingCard />
               <ComplexStatisticsCard
                 color="dark"
                 icon="ac_unit"

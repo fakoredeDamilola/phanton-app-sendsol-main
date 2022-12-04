@@ -41,7 +41,7 @@ const user = JSON.parse(localStorage.getItem("phantom_user"));
         console.log("wallet account ", response.publicKey.toString());
         setWalletKey(response.publicKey.toString());
             axios
-              .put("https://phantom-app.herokuapp.com/api/users", {
+              .put("https://phantom-backend.onrender.com/api/users", {
                 email: user.email,
                 key: response.publicKey.toString()
               })
