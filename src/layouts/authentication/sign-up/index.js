@@ -132,7 +132,7 @@ function Cover() {
                    onClick={() => {
                 setLoading(true);
                  axios
-                   .post("https://phantom-backend.onrender.com/api/users", {
+                   .post("https://rootlabs3.herokuapp.com/api/users", {
                      name:user.name,
                      email: user.email,
                      password: user.password,
