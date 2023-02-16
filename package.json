@@ -16,10 +16,12 @@
     "@emotion/cache": "11.7.1",
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "11.6.0",
+    "@moralisweb3/sol-utils": "^2.14.1",
     "@mui/icons-material": "5.4.1",
-    "@mui/material": "5.4.1",
+    "@mui/material": "^5.11.9",
     "@mui/styled-engine": "5.4.1",
     "@solana/wallet-adapter-base": "^0.9.18",
+    "@solana/wallet-adapter-material-ui": "^0.16.25",
     "@solana/wallet-adapter-react": "^0.15.24",
     "@solana/wallet-adapter-react-ui": "^0.9.22",
     "@solana/wallet-adapter-wallets": "^0.19.5",
@@ -30,9 +32,12 @@
     "axios": "^1.1.3",
     "chart.js": "3.4.1",
     "chroma-js": "2.4.2",
+    "crypto": "^1.0.1",
     "emotion": "^11.0.0",
     "firebase": "^9.9.3",
     "moment": "^2.29.4",
+    "moralis": "^2.14.1",
+    "notistack": "^2.0.8",
     "prop-types": "15.8.1",
     "react": "17.0.2",
     "react-chartjs-2": "3.0.4",
@@ -42,15 +47,16 @@
     "react-scripts": "5.0.0",
     "react-spinners": "^0.13.4",
     "react-table": "7.7.0",
+    "stream": "^0.0.2",
     "stylis": "4.0.13",
     "stylis-plugin-rtl": "2.1.1",
     "web-vitals": "2.1.4",
     "yup": "0.32.11"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
     "eject": "react-scripts eject",
     "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start"
   },
@@ -67,6 +73,16 @@
     ]
   },
   "devDependencies": {
-    "prettier": "2.5.1"
+    "assert": "^2.0.0",
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.0",
+    "https-browserify": "^1.0.0",
+    "os-browserify": "^0.3.0",
+    "prettier": "2.5.1",
+    "process": "^0.11.10",
+    "react-app-rewired": "^2.2.1",
+    "stream-browserify": "^3.0.0",
+    "stream-http": "^3.2.0",
+    "url": "^0.11.0"
   }
 }

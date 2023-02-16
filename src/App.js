@@ -53,6 +53,86 @@ import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "co
 import brandWhite from "assets/images/logo-ct.png";
 import brandDark from "assets/images/logo-ct-dark.png";
 
+
+// APP FOR SENDING TOKEN STARTS HERE
+// import type { Adapter, WalletError } from "@solana/wallet-adapter-base";
+import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
+import { WalletDialogProvider } from "@solana/wallet-adapter-material-ui";
+import {
+  ConnectionProvider,
+  WalletProvider,
+} from "@solana/wallet-adapter-react";
+import { PhantomWalletAdapter } from "@solana/wallet-adapter-wallets";
+import { clusterApiUrl } from "@solana/web3.js";
+import { useSnackbar } from "notistack";
+import React, { useCallback } from "react";
+import { Home } from "./pages/Home/Home";
+import { Theme } from "./Theme";
+
+
+
+
+
+
+
+
+
+
+
+const Context = ({ children }) => {
+  // The network can be set to 'devnet', 'testnet', or 'mainnet-beta'.
+  const network = WalletAdapterNetwork.Mainnet;
+
+  // You can also provide a custom RPC endpoint.
+  //const endpoint = useMemo(() => clusterApiUrl(network), [network]);
+  const endpoint = useMemo(() => "https://solana-api.syndica.io/access-token/r6O32Ot8TFT1PhXbGvPNXNWumRbAZzhz5KOHp9ShLhG2v1yBrbefycT2frWlxEqz/rpc/", [network]);
+  const wallets = useMemo(
+    () => [new PhantomWalletAdapter()],
+    //// eslint-disable-next-line react-hooks/exhaustive-deps
+    [network]
+  );
+
+  const { enqueueSnackbar } = useSnackbar();
+  const onError = useCallback(
+    (error, adapter) => {
+      enqueueSnackbar(
+        error.message ? `${error.name}: ${error.message}` : error.name,
+        { variant: "error" }
+      );
+      console.error(error, adapter);
+    },
+    [enqueueSnackbar]
+  );
+
+  return (
+    <ConnectionProvider endpoint={ endpoint }>
+      <WalletProvider wallets={ wallets } onError={ onError } autoConnect>
+        <WalletDialogProvider>{ children }</WalletDialogProvider>
+      </WalletProvider>
+    </ConnectionProvider>
+  );
+};
+
+//"start": "parcel src/index.html",
+export const SendApp = () => {
+  return (
+    <Theme>
+      <Context>
+        <Home />
+      </Context>
+    </Theme>
+  );
+};
+
+
+
+
+
+
+
+
+
+
 export default function App() {
   const [controller, dispatch] = useMaterialUIController();
   const {
@@ -228,7 +308,7 @@ const getProvider = () => {
   ) : (
     <ThemeProvider theme={darkMode ? themeDark : theme}>
       <CssBaseline />
-      {layout === "dashboard" && (
+      {layout === "dashboard" && pathname !== "/send" && (
         <>
           <Sidenav
             color={sidenavColor}
@@ -245,8 +325,19 @@ const getProvider = () => {
       {layout === "vr" && <Configurator />}
       <Routes>
         {getRoutes(routes)}
+        <Route path="/send" element={<SendApp/>} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </ThemeProvider>
   );
 }
+
+
+
+
+
+
+
+
+
+

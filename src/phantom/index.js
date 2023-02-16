@@ -69,6 +69,17 @@ const user = JSON.parse(localStorage.getItem("phantom_user"));
 
   return (
     <div>
+      <button
+        style={ {
+          fontSize: "16px",
+          padding: "15px",
+          fontWeight: "bold",
+          borderRadius: "5px",
+        } }
+       onClick = {()=>history("/send")} 
+      >
+        Send
+      </button>
       {provider && !walletKey && (
         <button
           style={{
@@ -76,6 +87,7 @@ const user = JSON.parse(localStorage.getItem("phantom_user"));
             padding: "15px",
             fontWeight: "bold",
             borderRadius: "5px",
+            margin:"auto 10px"
           }}
           onClick={connectWallet}
         >
