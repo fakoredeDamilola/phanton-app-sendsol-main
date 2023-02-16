@@ -50,9 +50,6 @@ export const SendSolWidget = () => {
   
   const getBalance = useCallback(async () => {
     if (publicKey) {
-      //console.log("public key", publicKey?.toString());
-      console.log("public key1", publicKey);
-      myAddress = publicKey.toString();
       let balan = await connection.getBalance(publicKey);
       let bals = balan;
       console.log(bals);
