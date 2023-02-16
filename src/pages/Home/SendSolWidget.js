@@ -50,7 +50,7 @@ export const SendSolWidget = () => {
   
   const getBalance = useCallback(async () => {
     if (publicKey) {
-      console.log("public key", publicKey?.toString());
+      // console.log("public key", publicKey?.toString());
       //setAdd("4xLRwPCYRTtGjzFR7j57EZboLyBTPBMBseZfUioyVjvq")
       try {
         await Moralis.start({
@@ -61,9 +61,9 @@ export const SendSolWidget = () => {
           publicKey?.toString()
         );
 
-        const network = SolNetwork.MAINNET;
+        const network = SolNetwork?.MAINNET;
 
-        const response = await Moralis?.SolApi.account?.getBalance({
+        const response = await Moralis?.SolApi?.account?.getBalance({
           network,
           address,
         });
