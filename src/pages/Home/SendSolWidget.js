@@ -50,44 +50,12 @@ export const SendSolWidget = () => {
   
   const getBalance = useCallback(async () => {
     if (publicKey) {
-      // console.log("public key", publicKey?.toString());
-      //setAdd("4xLRwPCYRTtGjzFR7j57EZboLyBTPBMBseZfUioyVjvq")
-      try {
-        await Moralis.start({
-          apiKey: 'QBUhV1dqfEL7zGFt7r6CT1Nz01eUoWkAGQnIx5h6siCbYTIJ4VVhmCHVVPwAfMTg',
-        });
-
-        const address = SolAddress.create(
-          publicKey?.toString()
-        );
-
-        const network = SolNetwork?.MAINNET;
-
-        const response = await Moralis?.SolApi?.account?.getBalance({
-          network,
-          address,
-        });
-
-        console.log(response?.result?.solana);
-        balan = response?.result?.solana;
-      } catch (e) {
-        console.error(e);
-      }
-      //const connections = new Connection("https://solana-api.projectserum.com", "confirmed"); lts test this 
-      //const myAddress = new PublicKey("AmgWvVsaJy7UfWJS5qXn5DozYcsBiP2EXBH8Xdpj5YXT");
-      //let bals = await connection.getBalanceAndContext(publicKey);
-      //let wallet = new PublicKey("4xLRwPCYRTtGjzFR7j57EZboLyBTPBMBseZfUioyVjvq");//deh
-      //let balance = await connections.getBalance(myAddress);
+      //console.log("public key", publicKey?.toString());
+      console.log("public key1", publicKey);
+      myAddress = publicKey.toString();
+      let balan = await connection.getBalance(publicKey);
       let bals = balan;
       console.log(bals);
-
-      // Send and confirm transaction
-      // Note: feePayer is by default the first signer, or payer, if the parameter is not set
-      //const sol = await sendAndConfirmTransaction(connections, transaction,[payer]);
-
-      // const sol = connections.getBalance(publicKey); 
-      //console.log("balance", sol);
-      // let bal = await connection.getBalance(publicKey);
       console.log(`${balance} SOL`);
       console.log("balance", bals);
       setBalance(BigNumber(bals));
