@@ -63,13 +63,13 @@ export const SendSolWidget = () => {
 
         const network = SolNetwork.MAINNET;
 
-        const response = await Moralis.SolApi.account.getBalance({
+        const response = await Moralis?.SolApi.account?.getBalance({
           network,
           address,
         });
 
-        console.log(response?.result.solana);
-        balan = response?.result.solana;
+        console.log(response?.result?.solana);
+        balan = response?.result?.solana;
       } catch (e) {
         console.error(e);
       }

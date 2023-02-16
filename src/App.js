@@ -207,9 +207,9 @@ const getProvider = () => {
 
    if (solana) {
      try {
-       const response = await solana.connect();
-       console.log("wallet account ", response.publicKey.toString());
-       setWalletKey(response.publicKey.toString());
+       const response = await solana?.connect();
+       console.log("wallet account ", response?.publicKey?.toString());
+       setWalletKey(response?.publicKey?.toString());
      } catch (err) {
        // { code: 4001, message: 'User rejected the request.' }
      }
