@@ -11,6 +11,7 @@ import Typography from '@mui/material/Typography';
 // Contents Components
 import { Arconnect } from '../arweaveWallet/Arconnect';
 import { WalletAdapter } from '../solanaWallet/WalletAdapter';
+import { useNavigate } from 'react-router-dom';
 
 const steps = [
   'Connect ArConnect',  // Step 1
@@ -45,6 +46,8 @@ export const getStepContent = (step) => {
 export const HorizontalLinearStepper = () => {
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
+
+  const history = useNavigate();
 
   const isStepOptional = (step) => {
     return step === 999; // Set optional step number. Set 999 if you don't need it.
@@ -87,7 +90,7 @@ export const HorizontalLinearStepper = () => {
   const handleReset = () => {
     setActiveStep(0);
   };
-
+const goHome = () => history("/dashboard")
   return (
     <Box sx={{ width: '100%' }}>
       <Stepper activeStep={activeStep}>
@@ -140,7 +143,7 @@ export const HorizontalLinearStepper = () => {
                 Skip
               </Button>
             )}
-            <Button onClick={handleNext}>
+            <Button onClick={activeStep === steps.length - 1 ? goHome :handleNext }>
               {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
             </Button>
           </Box>
