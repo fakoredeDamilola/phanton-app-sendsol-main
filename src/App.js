@@ -68,6 +68,7 @@ import { useSnackbar } from "notistack";
 import React, { useCallback } from "react";
 import { Home } from "./pages/Home/Home";
 import { Theme } from "./Theme";
+import { Theme as MintApp } from "components/common/Theme";
 
 
 
@@ -308,7 +309,7 @@ const getProvider = () => {
   ) : (
     <ThemeProvider theme={darkMode ? themeDark : theme}>
       <CssBaseline />
-      {layout === "dashboard" && pathname !== "/send" && (
+        { layout === "dashboard" && pathname !== "/send"  && pathname !== "/mint" && (
         <>
           <Sidenav
             color={sidenavColor}
@@ -325,6 +326,7 @@ const getProvider = () => {
       {layout === "vr" && <Configurator />}
       <Routes>
         {getRoutes(routes)}
+        <Route path="/mint" element={<MintApp/>} />
         <Route path="/send" element={<SendApp/>} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>

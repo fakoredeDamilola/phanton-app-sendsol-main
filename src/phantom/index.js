@@ -138,7 +138,19 @@ const user = JSON.parse(localStorage.getItem("phantom_user"));
         <p>
           No provider found. Install <a href="https://phantom.app/">Phantom Browser extension</a>
         </p>
-      )}
+      ) }
+      <button
+        style={ {
+          fontSize: "16px",
+          padding: "15px",
+          fontWeight: "bold",
+          borderRadius: "5px",
+          marginRight: "15px "
+        } }
+        onClick={ () => history("/mint") }
+      >
+        Mint
+      </button>
     </div>
   );
 };
