@@ -27,16 +27,16 @@ function Index({price, sub, color}) {
     <Wrapper>
       <h1 className='msg'>Your are about to purchase { (sub >= 60) ? `${sub / 60} ${(sub / 60 > 1) ? " hours" : " hour"}` : `${sub} ${(sub > 1) ? " minutes" : "minute"}` } subscription</h1>
       { showItem ? (
-        <StripeContainer />
+        <StripeContainer price={price} />
       ) : (
         <>
           {/* <h3>${price}.00</h3> */}
-            <Card price={ price } sub={ sub } color={ color } />
-          <button style={{backgroundColor: `${color}`}} onClick={ () => setShowItem(true) }>Purchase Subscription</button>
+            <Card price={ price } sub={ sub } color={ color } setCard={()=>{}} />
+          <button  onClick={ () => setShowItem(true) }>Purchase Subscription</button>
         </>
       ) }
     </Wrapper>
   );
 }
 
-export default Index;
+export default Index; 

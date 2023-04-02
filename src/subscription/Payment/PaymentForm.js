@@ -5,18 +5,43 @@ import styled from "styled-components"
 import { pay } from "../../utils"
 
 const Wrapper = styled.form`
-.cont{
-  /* display: flex;
-  flex-direction: column; */
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  padding: 16px;
+  
+
   .StripeElement {
 	width: 350px;
 	padding: 11px 15px 11px 0;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   padding: 1rem;
   background-color: black;
 }
+`
+
+const AlertWrapper = styled.div`
+width: 250px;
+padding: 10px;
+border-top-right-radius: 10px;
+border-bottom-left-radius: 10px;
+border-bottom: 3px solid ${props => props.color};
+ box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+font-size: 14px;
+position: fixed;
+right: 2rem;
+top: 2rem;
+background-color: white;
+&::before{
+  content: "X";
+  font-size: 16px;
+  position: absolute;
+  right: 10px;
+  font-weight: 700;
+
 }
 `
+const Alert = ({ message, color, onClick }) => <AlertWrapper onClick={ onClick } color={ color }>
+  { message }
+</AlertWrapper>
+
 
 
 const CARD_OPTIONS = {
@@ -39,8 +64,9 @@ const CARD_OPTIONS = {
   }
 }
 
-export default function PaymentForm() {
+export default function PaymentForm({ price }) {
   const [success, setSuccess] = useState(false)
+  const [alertDetails, setAlertDetails] = useState({ show: false, color: null, message: "" })
   const stripe = useStripe()
   const elements = useElements()
 
@@ -55,7 +81,7 @@ export default function PaymentForm() {
 
     if (!error) {
       const { id } = paymentMethod
-      pay(1000,id)
+      pay(price, id)
       /*try {
         const { id } = paymentMethod
         const response = await axios.post("http://localhost:4000/payment", {
@@ -71,20 +97,23 @@ export default function PaymentForm() {
       } catch (error) {
         console.log("Error", error)
       } */
+      setAlertDetails({ show: true, color: "light-green", message: "Your payment was successful" })
     } else {
-      console.log(error.message)
+      console.log()
+      setAlertDetails({ show: true, color: "red", message: error.message })
     }
   }
 
   return (
     <>
+      {alertDetails.show && <Alert message={ alertDetails.message } color={ alertDetails.color } onClick={ () => setAlertDetails(previousState => ({ ...previousState, show: false })) } /> }
       { !success ?
         <Wrapper onSubmit={ handleSubmit }>
-              <div className="cont">
+          <div className="cont">
             <CardElement
               options={ CARD_OPTIONS }
             />
-              </div>
+          </div>
           {/* <fieldset className="FormGroup">
             <div className="FormRow">
             </div>

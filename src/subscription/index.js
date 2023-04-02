@@ -6,7 +6,7 @@ import Payment from "./Payment/index"
 const Wrapper = Styled.div`
 font-family: "Roboto","Helvetica","Arial",sans-serif;
 .title{
-  font-size: 4rem;
+  font-size: 3rem;
   margin: 2rem auto;
   text-align: center;
 }
@@ -41,10 +41,11 @@ function Subscription() {
   }
   return (
     <>
+      {  card && <button style={{margin: "4rem 2rem 0", border: "none",boxShadow: "none", fontSize: "1.5rem"}} onClick={ ()=>setCard(null)} > {"<"} back</button>}
   { !card ? <Wrapper>
       <h3 className='title'>Subscription and Pricing</h3>
       <div className='container'>
-        { options.map((el, index) => <Card sub={ el.sub } price={ el.price } color={el.color} setCard={setCard} />) }
+        { options.map((el, index) => <Card key={el.sub} sub={ el.sub } price={ el.price } color={el.color} setCard={setCard} />) }
       </div>
       </Wrapper> : <Payment price={ card.price } sub={ card.sub } color={ card.color } setCard={ () => null } />}
     </>

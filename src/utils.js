@@ -1,9 +1,8 @@
 import appStripe from "stripe"
-import { REACT_APP_SECRETE_KEY } from "./key"
 
 
 
-const secrete = REACT_APP_SECRETE_KEY
+const secrete = process.env.REACT_APP_SECRETE_KEY
 const stripe = appStripe(secrete)
 export async function pay(amount, id) {
   try {
