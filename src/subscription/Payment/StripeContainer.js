@@ -5,7 +5,7 @@ import PaymentForm from "./PaymentForm"
 
 
 // const PUBLIC_KEY = "pk_test_rgWMA3zxjAtwaB6iV8b5W40x"
-const PUBLIC_KEY = process.env.REACT_APP_PUBLISHABLE_KEY;
+const PUBLIC_KEY = "pk_live_BAQCVkj5J2Yzd4cxshbG7alP";
 
 
 const stripeTestPromise = loadStripe(PUBLIC_KEY)
