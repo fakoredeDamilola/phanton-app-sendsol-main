@@ -27,7 +27,7 @@ import { MintNft } from '../nft/MintNft';
 // Default styles that can be overridden by your app
 require('@solana/wallet-adapter-react-ui/styles.css');
 
-export const getStepContent = (step: number) => {
+export const getStepContent = (step) => {
   switch (step) {
     case 1: // Step 2
       return (

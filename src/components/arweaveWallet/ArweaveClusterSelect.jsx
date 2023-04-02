@@ -12,7 +12,7 @@ import { ArweaveClusterContext } from '../../providers/ArweaveCluster';
 export const ArweaveClusterSelect = () => {
   const { arweave, changeArweaveCluster } = useContext(ArweaveClusterContext);
 
-  const onchangeArweaveCluster = (event: SelectChangeEvent) => {
+  const onchangeArweaveCluster = (event) => {
     changeArweaveCluster(event.target.value);
   };
 

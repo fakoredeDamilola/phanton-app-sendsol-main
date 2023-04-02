@@ -69,6 +69,7 @@ import React, { useCallback } from "react";
 import { Home } from "./pages/Home/Home";
 import { Theme } from "./Theme";
 import { Theme as MintApp } from "components/common/Theme";
+import Subscription from "subscription";
 
 
 
@@ -178,17 +179,17 @@ export default function App() {
 
 
 
- const [provider, setProvider] = useState();
+  const [provider, setProvider] = useState();
   const [walletKey, setWalletKey] = useState();
-  
 
-const getProvider = () => {
-  if ("solana" in window) {
-    // @ts-ignore
-    const provider = window.solana ;
-    if (provider.isPhantom) return provider ;
-  }
-};
+
+  const getProvider = () => {
+    if ("solana" in window) {
+      // @ts-ignore
+      const provider = window.solana;
+      if (provider.isPhantom) return provider;
+    }
+  };
 
 
   useEffect(() => {
@@ -199,27 +200,27 @@ const getProvider = () => {
   }, []);
 
 
-  
+
 
   const connectWallet = async () => {
-   console.log("Clicked")
-   // @ts-ignore
-   const { solana } = window;
+    console.log("Clicked")
+    // @ts-ignore
+    const { solana } = window;
 
-   if (solana) {
-     try {
-       const response = await solana?.connect();
-       console.log("wallet account ", response?.publicKey?.toString());
-       setWalletKey(response?.publicKey?.toString());
-     } catch (err) {
-       // { code: 4001, message: 'User rejected the request.' }
-     }
-   }
- };
-  
+    if (solana) {
+      try {
+        const response = await solana?.connect();
+        console.log("wallet account ", response?.publicKey?.toString());
+        setWalletKey(response?.publicKey?.toString());
+      } catch (err) {
+        // { code: 4001, message: 'User rejected the request.' }
+      }
+    }
+  };
 
 
-    const disconnectWallet = async () => {
+
+  const disconnectWallet = async () => {
     // @ts-ignore
     const { solana } = window;
 
@@ -251,7 +252,7 @@ const getProvider = () => {
       }
 
       if (route.route) {
-        return <Route exact path={route.route} element={route.component} key={route.key} />;
+        return <Route exact path={ route.route } element={ route.component } key={ route.key } />;
       }
 
       return null;
@@ -270,10 +271,10 @@ const getProvider = () => {
       position="fixed"
       right="2rem"
       bottom="2rem"
-      zIndex={99}
+      zIndex={ 99 }
       color="dark"
-      sx={{ cursor: "pointer" }}
-      onClick={handleConfiguratorOpen}
+      sx={ { cursor: "pointer" } }
+      onClick={ handleConfiguratorOpen }
     >
       <Icon fontSize="small" color="inherit">
         settings
@@ -282,53 +283,54 @@ const getProvider = () => {
   );
 
   return direction === "rtl" ? (
-    <CacheProvider value={rtlCache}>
-      <ThemeProvider theme={darkMode ? themeDarkRTL : themeRTL}>
+    <CacheProvider value={ rtlCache }>
+      <ThemeProvider theme={ darkMode ? themeDarkRTL : themeRTL }>
         <CssBaseline />
-        {layout === "dashboard" && (
+        { layout === "dashboard" && (
           <>
             <Sidenav
-              color={sidenavColor}
-              brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
+              color={ sidenavColor }
+              brand={ (transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite }
               brandName="3D Root labs"
-              routes={routes}
-              onMouseEnter={handleOnMouseEnter}
-              onMouseLeave={handleOnMouseLeave}
+              routes={ routes }
+              onMouseEnter={ handleOnMouseEnter }
+              onMouseLeave={ handleOnMouseLeave }
             />
             <Configurator />
-            {configsButton}
+            { configsButton }
           </>
-        )}
-        {layout === "vr" && <Configurator />}
+        ) }
+        { layout === "vr" && <Configurator /> }
         <Routes>
-          {getRoutes(routes)}
-          <Route path="*" element={<Navigate to="/dashboard" />} />
+          { getRoutes(routes) }
+          <Route path="*" element={ <Navigate to="/dashboard" /> } />
         </Routes>
       </ThemeProvider>
     </CacheProvider>
   ) : (
-    <ThemeProvider theme={darkMode ? themeDark : theme}>
+    <ThemeProvider theme={ darkMode ? themeDark : theme }>
       <CssBaseline />
-        { layout === "dashboard" && pathname !== "/send"  && pathname !== "/mint" && (
+      { layout === "dashboard" && pathname !== "/send" && pathname !== "/mint" && pathname !== "/subscription" && (
         <>
           <Sidenav
-            color={sidenavColor}
-            brand={require("./assets/logo.png")}
+            color={ sidenavColor }
+            brand={ require("./assets/logo.png") }
             brandName="3D Root Lab"
-            routes={routes}
-            onMouseEnter={handleOnMouseEnter}
-            onMouseLeave={handleOnMouseLeave}
+            routes={ routes }
+            onMouseEnter={ handleOnMouseEnter }
+            onMouseLeave={ handleOnMouseLeave }
           />
           <Configurator />
-          {configsButton}
+          { configsButton }
         </>
-      )}
-      {layout === "vr" && <Configurator />}
+      ) }
+      { layout === "vr" && <Configurator /> }
       <Routes>
-        {getRoutes(routes)}
-        <Route path="/mint" element={<MintApp/>} />
-        <Route path="/send" element={<SendApp/>} />
-        <Route path="*" element={<Navigate to="/" />} />
+        { getRoutes(routes) }
+        <Route path="/mint" element={ <MintApp /> } />
+        <Route path="/send" element={ <SendApp /> } />
+        <Route path="/subscription" element={ <Subscription /> } />
+        <Route path="*" element={ <Navigate to="/" /> } />
       </Routes>
     </ThemeProvider>
   );
