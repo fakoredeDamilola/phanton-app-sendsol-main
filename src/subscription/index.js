@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import Styled from "styled-components"
+import { useNavigate } from 'react-router-dom'
 import Card from "./Card"
 import Payment from "./Payment/index"
 
@@ -39,9 +40,10 @@ function Subscription() {
   const handleSubmit = (e) => {
     e.preventDefault();
   }
+  const navigate = useNavigate()
   return (
     <>
-      {  card && <button style={{margin: "4rem 2rem 0", border: "none",boxShadow: "none", fontSize: "1.5rem"}} onClick={ ()=>setCard(null)} > {"<"} back</button>}
+       <button style={{margin: "4rem 2rem 0", border: "none",boxShadow: "none", fontSize: "1.5rem"}} onClick={ card ? ()=>setCard(null) : ()=>navigate("/dashboard")} > {"<"} back</button>
   { !card ? <Wrapper>
       <h3 className='title'>Subscription and Pricing</h3>
       <div className='container'>

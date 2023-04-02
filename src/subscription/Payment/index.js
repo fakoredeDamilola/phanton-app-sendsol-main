@@ -10,6 +10,7 @@ flex-direction: column;
 align-items: center;
 .msg{
   margin-bottom: 3rem;
+  text-align: center;
 }
 button{
   margin-top: 3rem; 
