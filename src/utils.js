@@ -1,22 +1,23 @@
 import appStripe from "stripe"
 
-
+// const userData = JSON.parse(localStorage.getItem("userData"))
 
 const secrete = "sk_live_iBluqXMu8TthVIcwwqb0cwek"
 const stripe = appStripe(secrete)
-export async function pay(amount, id) {
+export async function pay(amount, id, description) {
+  let result = null;
   try {
     const payment = await stripe.paymentIntents.create({
-      amount,
+      amount: amount * 100 , // To convert to cent.
       currency: "USD",
-      description: "Spoon For cooking",
+      description,
+      // customer: userData.email,
       payment_method: id,
       confirm: true
     })
-
-    console.log("Payment", payment)
+    result = payment;
   } catch (error) {
-    console.log("Error", "Payment fail");
-    console.log("Message: ", error.message)
+    result = error;
   }
+  return result;
 }

@@ -29,17 +29,22 @@ position: fixed;
 right: 2rem;
 top: 2rem;
 background-color: white;
-&::before{
+.cancel{
   content: "X";
   font-size: 16px;
   position: absolute;
   right: 10px;
+  top: 10px;
   font-weight: 700;
 
 }
+p{
+  padding: 0 10px;
+}
 `
 const Alert = ({ message, color, onClick }) => <AlertWrapper onClick={ onClick } color={ color }>
-  { message }
+  <p>{ message }</p>
+<span className="cancel">X</span>
 </AlertWrapper>
 
 
@@ -64,7 +69,7 @@ const CARD_OPTIONS = {
   }
 }
 
-export default function PaymentForm({ price }) {
+export default function PaymentForm({ price , description}) {
   const [success, setSuccess] = useState(false)
   const [alertDetails, setAlertDetails] = useState({ show: false, color: null, message: "" })
   const stripe = useStripe()
@@ -81,7 +86,7 @@ export default function PaymentForm({ price }) {
 
     if (!error) {
       const { id } = paymentMethod
-      pay(price, id)
+      let value = await pay(price, id, description)
       /*try {
         const { id } = paymentMethod
         const response = await axios.post("http://localhost:4000/payment", {
@@ -97,7 +102,12 @@ export default function PaymentForm({ price }) {
       } catch (error) {
         console.log("Error", error)
       } */
-      setAlertDetails({ show: true, color: "light-green", message: "Your payment was successful" })
+      if (value.status === "succeeded") {
+      setAlertDetails({ show: true, color: "#4bb543", message: `Your purchase of ${value.description} at $${price} was successful` })
+      } else {
+        setAlertDetails({ show: true, color: "red", message: value.message })
+      }
+
     } else {
       console.log()
       setAlertDetails({ show: true, color: "red", message: error.message })

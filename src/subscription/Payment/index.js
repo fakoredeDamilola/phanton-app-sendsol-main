@@ -24,11 +24,12 @@ button{
 
 function Index({price, sub, color}) {
   const [showItem, setShowItem] = useState(false);
+  const subString = (sub >= 60) ? `${sub / 60} ${(sub / 60 > 1) ? " hours" : " hour"}` : `${sub} ${(sub > 1) ? " minutes" : "minute"}`;
   return (
     <Wrapper>
-      <h1 className='msg'>Your are about to purchase { (sub >= 60) ? `${sub / 60} ${(sub / 60 > 1) ? " hours" : " hour"}` : `${sub} ${(sub > 1) ? " minutes" : "minute"}` } subscription</h1>
+      <h1 className='msg'>Your are about to purchase { subString } subscription at { price.toLocaleString("en-US", { style: "currency", currency: "USD" }) }</h1>
       { showItem ? (
-        <StripeContainer price={price} />
+        <StripeContainer price={price} description={`${subString} subscription`} />
       ) : (
         <>
           {/* <h3>${price}.00</h3> */}
