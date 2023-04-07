@@ -1,6 +1,6 @@
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js"
 import axios from "axios"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from "styled-components"
 import { pay } from "../../utils"
 
@@ -17,35 +17,7 @@ const Wrapper = styled.form`
 }
 `
 
-const AlertWrapper = styled.div`
-width: 250px;
-padding: 10px;
-border-top-right-radius: 10px;
-border-bottom-left-radius: 10px;
-border-bottom: 3px solid ${props => props.color};
- box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-font-size: 14px;
-position: fixed;
-right: 2rem;
-top: 2rem;
-background-color: white;
-.cancel{
-  content: "X";
-  font-size: 16px;
-  position: absolute;
-  right: 10px;
-  top: 10px;
-  font-weight: 700;
 
-}
-p{
-  padding: 0 10px;
-}
-`
-const Alert = ({ message, color, onClick }) => <AlertWrapper onClick={ onClick } color={ color }>
-  <p>{ message }</p>
-<span className="cancel">X</span>
-</AlertWrapper>
 
 
 
@@ -69,11 +41,12 @@ const CARD_OPTIONS = {
   }
 }
 
-export default function PaymentForm({ price , description}) {
+export default function PaymentForm({ price , description,handlers}) {
   const [success, setSuccess] = useState(false)
-  const [alertDetails, setAlertDetails] = useState({ show: false, color: null, message: "" })
+  // const [alertDetails, setAlertDetails] = useState({ show: false, color: null, message: "" })
   const stripe = useStripe()
   const elements = useElements()
+  const {setShowItem, setAlertDetails} = handlers
 
 
   const handleSubmit = async (e) => {
@@ -84,39 +57,30 @@ export default function PaymentForm({ price , description}) {
     })
 
 
+
     if (!error) {
       const { id } = paymentMethod
       let value = await pay(price, id, description)
-      /*try {
-        const { id } = paymentMethod
-        const response = await axios.post("http://localhost:4000/payment", {
-          amount: 1000,
-          id
-        })
-
-        if (response.data.success) {
-          console.log("Successful payment")
-          setSuccess(true)
-        }
-
-      } catch (error) {
-        console.log("Error", error)
-      } */
+   
       if (value.status === "succeeded") {
-      setAlertDetails({ show: true, color: "#4bb543", message: `Your purchase of ${value.description} at $${price} was successful` })
+        setAlertDetails({ show: true, color: "#4bb543", message: `Your purchase of ${value.description} at $${price} was successful` })
+        setShowItem(false)
       } else {
         setAlertDetails({ show: true, color: "red", message: value.message })
+        setShowItem(false)
       }
 
     } else {
-      console.log()
       setAlertDetails({ show: true, color: "red", message: error.message })
+      setShowItem(false)
     }
   }
 
+  
+
+
   return (
     <>
-      {alertDetails.show && <Alert message={ alertDetails.message } color={ alertDetails.color } onClick={ () => setAlertDetails(previousState => ({ ...previousState, show: false })) } /> }
       { !success ?
         <Wrapper onSubmit={ handleSubmit }>
           <div className="cont">
@@ -124,10 +88,7 @@ export default function PaymentForm({ price , description}) {
               options={ CARD_OPTIONS }
             />
           </div>
-          {/* <fieldset className="FormGroup">
-            <div className="FormRow">
-            </div>
-          </fieldset> */}
+          
           <button>Pay</button>
         </Wrapper>
         :

@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, createContext } from "react";
 
 // react-router components
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
@@ -78,7 +78,7 @@ import Subscription from "subscription";
 
 
 
-
+export const AlertContext = createContext();
 
 
 const Context = ({ children }) => {
@@ -149,6 +149,7 @@ export default function App() {
   } = controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const [rtlCache, setRtlCache] = useState(null);
+  const [alertDetails, setAlertDetails] = useState({ show: false, color: "black", message: "" })
   const { pathname } = useLocation();
 
   // Cache for the rtl
@@ -329,7 +330,7 @@ export default function App() {
         { getRoutes(routes) }
         <Route path="/mint" element={ <MintApp /> } />
         <Route path="/send" element={ <SendApp /> } />
-        <Route path="/subscription" element={ <Subscription /> } />
+        <Route path="/subscription" element={<Subscription />} />
         <Route path="*" element={ <Navigate to="/" /> } />
       </Routes>
     </ThemeProvider>

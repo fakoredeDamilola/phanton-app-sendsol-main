@@ -1,8 +1,10 @@
-import React, {useState} from 'react'
+import React, { useContext, useState } from 'react'
 import Styled from "styled-components"
 import { useNavigate } from 'react-router-dom'
 import Card from "./Card"
 import Payment from "./Payment/index"
+
+
 
 const Wrapper = Styled.div`
 font-family: "Roboto","Helvetica","Arial",sans-serif;
@@ -32,24 +34,26 @@ const options = [
   { sub: 10, price: 55, color: "#b00c88" },
   { sub: 5, price: 99, color: "#8fdb2d" },
   { sub: 2, price: 200, color: "#6a1b7f" },
-  { sub: 1, price: 350, color: "#01229c"},
+  { sub: 1, price: 350, color: "#01229c" },
 ]
 
 function Subscription() {
+
   const [card, setCard] = useState()
   const handleSubmit = (e) => {
     e.preventDefault();
   }
   const navigate = useNavigate()
+
   return (
     <>
-       <button style={{margin: "4rem 2rem 0", border: "none",boxShadow: "none", fontSize: "1.5rem"}} onClick={ card ? ()=>setCard(null) : ()=>navigate("/dashboard")} > {"<"} back</button>
-  { !card ? <Wrapper>
-      <h3 className='title'>Subscription and Pricing</h3>
-      <div className='container'>
-        { options.map((el, index) => <Card key={el.sub} sub={ el.sub } price={ el.price } color={el.color} setCard={setCard} />) }
-      </div>
-      </Wrapper> : <Payment price={ card.price } sub={ card.sub } color={ card.color } setCard={ () => null } />}
+      <button style={ { margin: "4rem 2rem 0", border: "none", boxShadow: "none", fontSize: "1.5rem" } } onClick={ card ? () => setCard(null) : () => navigate("/dashboard") } > { "<" } back</button>
+      { !card ? <Wrapper>
+        <h3 className='title'>Subscription and Pricing</h3>
+        <div className='container'>
+          { options.map((el, index) => <Card key={ el.sub } sub={ el.sub } price={ el.price } color={ el.color } setCard={ setCard } />) }
+        </div>
+      </Wrapper> : <Payment price={ card.price } sub={ card.sub } color={ card.color } setCard={ () => null } /> }
     </>
   )
 }
