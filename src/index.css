@@ -1,5 +1,41 @@
 @import './reset.css';
 
+
+:root {
+  --primary: #032250;
+  --primary_light: #063f93;
+  --increment: #057a34;
+  --decrease: #ff0000;
+  --secondary: #149dff;
+  --background: #fafafa;
+  --success: #77e1b4;
+  --success_2: #1d8458;
+  --success_light: #eefff5;
+  --error: #ff4c4d;
+  --danger_2: #cb0001;
+  --danger_light: #ffd7d7;
+  --free_light: #d0ebff;
+  --text: #212121;
+  --body_text: #818181;
+  --text_lighter: #666666;
+  --border: #efefef;
+  --grey_1: #07070c;
+  --grey_3: #828282;
+  --grey_4: #2e2e3a;
+  --grey_5: #535362;
+  --grey_8: #9a9aaf;
+  --grey_9: #c6cbd9;
+  --grey_10: #e2e2ea;
+  --grey_12: #fbfbfb;
+  --grey_13: #828282;
+  --grey_14: #474848;
+  --grey_15: #8d8d8d;
+  --tableHover: #fcfcfc;
+  --font_bold: "CircularStd Bold";
+  --font_medium: "CircularStd Medium";
+  --font_regular: "CircularStd";
+}
+
 html, body {
     background-color: #F5F5F5;
     color: #FFFFFF;

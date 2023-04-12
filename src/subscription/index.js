@@ -3,6 +3,7 @@ import Styled from "styled-components"
 import { useNavigate } from 'react-router-dom'
 import Card from "./Card"
 import Payment from "./Payment/index"
+import Table from "../components/table"
 
 
 
@@ -47,6 +48,7 @@ function Subscription() {
 
   return (
     <>
+      <Table/>
       <button style={ { margin: "4rem 2rem 0", border: "none", boxShadow: "none", fontSize: "1.5rem" } } onClick={ card ? () => setCard(null) : () => navigate("/dashboard") } > { "<" } back</button>
       { !card ? <Wrapper>
         <h3 className='title'>Subscription and Pricing</h3>

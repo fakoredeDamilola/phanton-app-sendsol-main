@@ -54,7 +54,7 @@
     "react-router-dom": "6.2.1",
     "react-scripts": "5.0.0",
     "react-spinners": "^0.13.4",
-    "react-table": "7.7.0",
+    "react-table": "^7.7.0",
     "stream": "^0.0.2",
     "stripe": "^11.17.0",
     "styled-components": "^5.3.9",
