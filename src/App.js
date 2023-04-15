@@ -328,9 +328,10 @@ export default function App() {
       { layout === "vr" && <Configurator /> }
       <Routes>
         { getRoutes(routes) }
-        <Route path="/mint" element={ <MintApp /> } />
+        {/* <Route path="/mint" element={ <MintApp /> } />
         <Route path="/send" element={ <SendApp /> } />
         <Route path="/subscription" element={<Subscription />} />
+        <Route path="/history" element={<Subscription />} /> */}
         <Route path="*" element={ <Navigate to="/" /> } />
       </Routes>
     </ThemeProvider>

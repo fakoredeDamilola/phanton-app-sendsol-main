@@ -61,8 +61,23 @@ export default function PaymentForm({ price , description,handlers}) {
     if (!error) {
       const { id } = paymentMethod
       let value = await pay(price, id, description)
-   
+      const data = {
+        name: description,
+        "subRatePerMin": price,
+        "hasActiveSub": true,
+        "email": "youremail@you.com"
+   }
       if (value.status === "succeeded") {
+        axios
+          .post("https://rootlabs3.herokuapp.com/api/users/sub",data)
+          .then((res) => {
+
+          })
+          .catch((err) => {
+            console.log("The error", err)
+          });
+
+
         setAlertDetails({ show: true, color: "#4bb543", message: `Your purchase of ${value.description} at $${price} was successful` })
         setShowItem(false)
       } else {

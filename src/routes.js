@@ -2,9 +2,13 @@ import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
 import Dashboard from "layouts/dashboard";
 import Payment from "./subscription"
+import { Theme as MintApp } from "components/common/Theme";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
+import History from "pages/History";
+import { SendApp } from "App";
+import { Home } from "pages/Home/Home";
 
 const routes = [
   {
@@ -39,6 +43,30 @@ const routes = [
     icon: <Icon fontSize="small">subscriptions</Icon>,
     route: "/subscription",
     component: <Payment />,
+  },
+    {
+    type: "collapse",
+    name: "History",
+    key: "history",
+    icon: <Icon fontSize="small">history</Icon>,
+    route: "/history",
+    component: <History />,
+  },
+    {
+    type: "collapse",
+    name: "Mint",
+    key: "mint",
+    icon: <Icon fontSize="small">payment</Icon>,
+    route: "/mint",
+    component: <MintApp />,
+  },
+    {
+    type: "collapse",
+    name: "Send",
+    key: "send",
+    icon: <Icon fontSize="small">send</Icon>,
+    route: "/send",
+    component: <Home />,
   },
 ];
 

@@ -7,28 +7,14 @@ import Columnsearch from "./Columnsearch";
 
 export const columns = [
   { Header: "NAME", accessor: "name", Filter: Columnsearch },
-  { Header: "EMAIL ADDRESS", accessor: "email", Filter: Columnsearch },
-  { Header: "PLAN", accessor: "plan", Filter: Columnsearch },
-  { Header: "ACCOUNT TYPE", accessor: "category", Filter: Columnsearch },
+  // { Header: "EMAIL ADDRESS", accessor: "email", Filter: Columnsearch },
+  { Header: "PLAN", accessor: "subRatePerMin", Filter: Columnsearch },
+  { Header: "STATUS", accessor: "hasActiveSub", Filter: Columnsearch, Cell: (props) => props.value ? "Active" : "Not Active", },
   {
-    Header: (
-      <span>
-        DATE <br />
-        JOINED
-      </span>
-    ),
-    accessor: "created_at",
+    Header: "DATE",
+    accessor: "createdAt",
     Filter: Columnsearch,
-  },
-  {
-    Header: (
-      <span>
-        RECENT
-        <br /> ACTIVITY
-      </span>
-    ),
-    accessor: "recent_activity",
-    Filter: Columnsearch,
+    Cell: (props) => new Date(props.value).toDateString(),
   },
 ];
 

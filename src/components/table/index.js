@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   useTable,
   useSortBy,
@@ -14,12 +14,15 @@ import Nothing from "./Nothing";
 // import { ModalContext } from "../../../App";
 import { Filter } from "./Filter";
 import data from "./dummy.json"
+import axios from "axios";
 
 export const SearchContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 5.6rem;
+  margin: auto;
+  margin-bottom: 1rem;
+width: 100%;
 
   .title {
     font-size: 2.4rem;
@@ -34,11 +37,18 @@ export const SearchContainer = styled.div`
 
 const Pagination = styled.div`
   display: flex;
+  width: 100%;
+    margin: auto;
+    margin-top: 0.5rem;
+    padding: 0.5rem 1.6rem;
+    background-color: white;
   button {
+    background-color: transparent;
+    border: none;
     svg {
       stroke: var(--body_text);
     }
-    width: 0.9rem;
+    width: 2rem;
 
     &.first {
       margin-left: auto;
@@ -65,11 +75,13 @@ const Pagination = styled.div`
 const Wrapper = styled.div`
   .table-fit {
     overflow: auto;
+    height: calc(100vh - 220px);
   }
   table {
     border-collapse: collapse;
     background-color: white;
-    width: 1088px;
+    width: 100%;
+    margin: auto;
   }
 
   tr {
@@ -79,8 +91,7 @@ const Wrapper = styled.div`
     display: grid;
 
     grid-template-columns:
-      16px minmax(auto, 201px) minmax(auto, 240px) minmax(auto, 80px)
-      minmax(auto, 130px) minmax(auto, 144px) minmax(auto, 114px);
+      16px 1fr 100px 120px 1fr;
     grid-gap: 19.17px;
     align-items: center;
     & > :nth-child(2) {
@@ -119,11 +130,30 @@ const Wrapper = styled.div`
   }
 `;
 
-const UserTable = ({ users = data }) => {
+const UserTable = () => {
+  const [data, setData] = useState([])
+  // const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    // setLoading(true);
+    // signInWithEmailAndPassword(auth, user.email, user.password)
+
+    axios
+      .get("https://rootlabs3.herokuapp.com/api/users/sub")
+      .then((res) => {
+        // setLoading(false);
+        // console.log(res)
+        setData(res.data)
+      })
+      .catch((err) => {
+        // setLoading(false);
+        // alert("Invalid Credentials");
+        console.log("The error", err)
+        });
+  }, [])
 
 
 
-  const data = users;
 
   const [user, setUser] = React.useState();
   const [colFilterPosition, setColFilterPosition] = React.useState({
@@ -176,21 +206,16 @@ const UserTable = ({ users = data }) => {
   const { globalFilter, pageIndex } = state;
 
   return (
-    <>
+    <div style={ { position: "relative" } }>
       <SearchContainer>
 
         <p className="title">
-          Users <span className="count">({ rows.length })</span>
+          History <span className="count">({ rows.length })</span>
         </p>
-        <Filter filterFunc={ setColFilterPosition } />
 
-        { colFilterPosition.index > 0 ? (
-          headerGroups[0].headers[colFilterPosition.index].render("Filter")
-        ) : (
-          <Search filter={ globalFilter } setFilter={ setGlobalFilter } />
-        ) }
-        {/*
-        */}
+
+        <Search filter={ globalFilter } setFilter={ setGlobalFilter } />
+
       </SearchContainer>
       {/* {
         <Modal>
@@ -235,7 +260,7 @@ const UserTable = ({ users = data }) => {
                 )) }
               </thead>
               <tbody { ...getTableBodyProps() }>
-                { flattenPlan(page).map((row) => {
+                { /*flattenPlan(page)*/page.map((row) => {
                   prepareRow(row);
                   return (
                     <tr
@@ -304,7 +329,7 @@ const UserTable = ({ users = data }) => {
         </Pagination>
       ) }
       { rows.length === 0 && <Nothing /> }
-    </>
+    </div>
   );
 };
 
