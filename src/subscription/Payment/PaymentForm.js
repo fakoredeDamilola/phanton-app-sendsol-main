@@ -69,7 +69,7 @@ export default function PaymentForm({ price, description, handlers }) {
       }
       if (value.status === "succeeded") {
         axios
-          .post("https://phantom-api.herokuapp.com/api/users/sub", data)
+          .post("https://phantom-api.herokuapp.com/api/sub", data)
           .then((res) => {
 
           })
