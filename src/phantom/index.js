@@ -34,19 +34,19 @@ const Phantom = () => {
     console.log("Clicked");
     // @ts-ignore
     const { solana } = window;
-const user = JSON.parse(localStorage.getItem("phantom_user"));
+    const user = JSON.parse(localStorage.getItem("phantom_user"));
     if (solana) {
       try {
         const response = await solana.connect();
         console.log("wallet account ", response.publicKey.toString());
         setWalletKey(response.publicKey.toString());
-            axios
-              .put("https://rootlabs3.herokuapp.com/api/users", {
-                email: user.email,
-                key: response.publicKey.toString()
-              })
-              .then((res) => {
-              });
+        axios
+          .put("https://phantom-api.herokuapp.com/api/users", {
+            email: user.email,
+            key: response.publicKey.toString()
+          })
+          .then((res) => {
+          });
       } catch (err) {
         // { code: 4001, message: 'User rejected the request.' }
       }
@@ -76,65 +76,65 @@ const user = JSON.parse(localStorage.getItem("phantom_user"));
           fontWeight: "bold",
           borderRadius: "5px",
         } }
-       onClick = {()=>history("/send")} 
+        onClick={ () => history("/send") }
       >
         Send
       </button>
-      {provider && !walletKey && (
+      { provider && !walletKey && (
         <button
-          style={{
+          style={ {
             fontSize: "16px",
             padding: "15px",
             fontWeight: "bold",
             borderRadius: "5px",
-            margin:"auto 10px"
-          }}
-          onClick={connectWallet}
+            margin: "auto 10px"
+          } }
+          onClick={ connectWallet }
         >
           Connect to Phantom Wallet
         </button>
-      )}
+      ) }
 
-      {provider && walletKey && (
-        <div style={{ display: "flex", alignItems: "center" }}>
+      { provider && walletKey && (
+        <div style={ { display: "flex", alignItems: "center" } }>
           <button
-            style={{
+            style={ {
               fontSize: "16px",
               padding: "15px",
               fontWeight: "bold",
               borderRadius: "5px",
               margin: "15px auto",
               marginInline: "10px"
-            }}
-            onClick={chooseReward}
+            } }
+            onClick={ chooseReward }
           >
-            {reward}
+            { reward }
           </button>
-          <RewardModal show={showModal} onClose={() => {setShowModal(false)}}>
+          <RewardModal show={ showModal } onClose={ () => { setShowModal(false) } }>
             <div className="modal-buttons">
-              <button onClick={() => {setReward('NFT STAKE'); setShowModal(false)}}>NFT Stake</button>
-              <button onClick={() => {setReward('MONITOR STAKE'); setShowModal(false)}}>MONITOR Stake</button>
+              <button onClick={ () => { setReward('NFT STAKE'); setShowModal(false) } }>NFT Stake</button>
+              <button onClick={ () => { setReward('MONITOR STAKE'); setShowModal(false) } }>MONITOR Stake</button>
             </div>
           </RewardModal>
           <button
-            style={{
+            style={ {
               fontSize: "16px",
               padding: "15px",
               fontWeight: "bold",
               borderRadius: "5px",
               margin: "15px auto",
-            }}
-            onClick={disconnectWallet}
+            } }
+            onClick={ disconnectWallet }
           >
             Disconnect
           </button>
-          <p onClick={() => setShow(!show)} style={{ fontSize: "12px", cursor: 'pointer' }}>
-            <span style={{fontWeight:"500",marginRight: "1rem"}}>{show ? "Hide wallet key " : "Show wallet key"}</span> <span>{show && walletKey}</span>
+          <p onClick={ () => setShow(!show) } style={ { fontSize: "12px", cursor: 'pointer' } }>
+            <span style={ { fontWeight: "500", marginRight: "1rem" } }>{ show ? "Hide wallet key " : "Show wallet key" }</span> <span>{ show && walletKey }</span>
           </p>
         </div>
-      )}
+      ) }
 
-      {!provider && (
+      { !provider && (
         <p>
           No provider found. Install <a href="https://phantom.app/">Phantom Browser extension</a>
         </p>

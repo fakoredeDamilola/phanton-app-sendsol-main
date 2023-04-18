@@ -139,7 +139,7 @@ const UserTable = () => {
     // signInWithEmailAndPassword(auth, user.email, user.password)
 
     axios
-      .get("https://rootlabs3.herokuapp.com/api/users/sub")
+      .get("https://phantom-api.herokuapp.com/api/users/sub")
       .then((res) => {
         // setLoading(false);
         // console.log(res)
@@ -149,7 +149,7 @@ const UserTable = () => {
         // setLoading(false);
         // alert("Invalid Credentials");
         console.log("The error", err)
-        });
+      });
   }, [])
 
 
