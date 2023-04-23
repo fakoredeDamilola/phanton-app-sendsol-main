@@ -59,64 +59,64 @@ function Basic() {
   const [loading, setLoading] = useState(false);
 
   return (
-    <BasicLayout image={bgImage}>
+    <BasicLayout image={ bgImage }>
       <Card>
         <MDBox
           variant="gradient"
           bgColor="info"
           borderRadius="lg"
           coloredShadow="info"
-          mx={2}
-          mt={-3}
-          p={2}
-          mb={1}
+          mx={ 2 }
+          mt={ -3 }
+          p={ 2 }
+          mb={ 1 }
           textAlign="center"
         >
-          <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
+          <MDTypography variant="h4" fontWeight="medium" color="white" mt={ 1 }>
             Sign in
           </MDTypography>
         </MDBox>
-        <MDBox pt={4} pb={3} px={3}>
+        <MDBox pt={ 4 } pb={ 3 } px={ 3 }>
           <MDBox component="form" role="form">
-            <MDBox mb={2}>
+            <MDBox mb={ 2 }>
               <MDInput
-                onChange={(e) => {
+                onChange={ (e) => {
                   setUser((prev) => ({
                     ...prev,
                     email: e.target.value,
                   }));
-                }}
+                } }
                 type="email"
                 label="Email"
                 fullWidth
               />
             </MDBox>
-            <MDBox mb={2}>
+            <MDBox mb={ 2 }>
               <MDInput
-                onChange={(e) => {
+                onChange={ (e) => {
                   setUser((prev) => ({
                     ...prev,
                     password: e.target.value,
                   }));
-                }}
+                } }
                 type="password"
                 label="Password"
                 fullWidth
               />
             </MDBox>
-            <MDBox display="flex" alignItems="center" ml={-1}>
-              <Switch checked={rememberMe} onChange={handleSetRememberMe} />
+            <MDBox display="flex" alignItems="center" ml={ -1 }>
+              <Switch checked={ rememberMe } onChange={ handleSetRememberMe } />
               <MDTypography
                 variant="button"
                 fontWeight="regular"
                 color="text"
-                onClick={handleSetRememberMe}
-                sx={{ cursor: "pointer", userSelect: "none", ml: -1 }}
+                onClick={ handleSetRememberMe }
+                sx={ { cursor: "pointer", userSelect: "none", ml: -1 } }
               >
                 &nbsp;&nbsp;Remember me
               </MDTypography>
             </MDBox>
-            <MDBox mt={4} mb={1}>
+            <MDBox mt={ 4 } mb={ 1 }>
               <MDButton
                onClick={() => {
               setLoading(true);
@@ -139,14 +139,14 @@ function Basic() {
                 color="info"
                 fullWidth
               >
-                sign in <ClipLoader loading={loading} size={25} />
+                sign in <ClipLoader loading={ loading } size={ 25 } />
               </MDButton>
             </MDBox>
-            <MDBox mt={3} mb={1} textAlign="center">
+            <MDBox mt={ 3 } mb={ 1 } textAlign="center">
               <MDTypography variant="button" color="text">
-                Don&apos;t have an account?{" "}
+                Don&apos;t have an account?{ " " }
                 <MDTypography
-                  component={Link}
+                  component={ Link }
                   to="/authentication/sign-up"
                   variant="button"
                   color="info"

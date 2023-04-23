@@ -41,12 +41,16 @@ const CARD_OPTIONS = {
   }
 }
 
+<<<<<<< HEAD
 export default function PaymentForm({ price,macAddress , description,handlers}) {
+=======
+export default function PaymentForm({ price, description, handlers }) {
+>>>>>>> 75f1ca32397653e4db6d730a604d0b581930bbdc
   const [success, setSuccess] = useState(false)
   // const [alertDetails, setAlertDetails] = useState({ show: false, color: null, message: "" })
   const stripe = useStripe()
   const elements = useElements()
-  const {setShowItem, setAlertDetails} = handlers
+  const { setShowItem, setAlertDetails } = handlers
 
 
   const handleSubmit = async (e) => {
@@ -66,7 +70,7 @@ export default function PaymentForm({ price,macAddress , description,handlers}) 
         "subRatePerMin": price,
         "hasActiveSub": true,
         "email": "youremail@you.com"
-   }
+      }
       if (value.status === "succeeded") {
         // axios
         //   .post("https://phantom-api.herokuapp.com/api/users/sub",data)
@@ -116,7 +120,7 @@ export default function PaymentForm({ price,macAddress , description,handlers}) 
     }
   }
 
-  
+
 
 
   return (
@@ -128,7 +132,7 @@ export default function PaymentForm({ price,macAddress , description,handlers}) 
               options={ CARD_OPTIONS }
             />
           </div>
-          
+
           <button>Pay</button>
         </Wrapper>
         :

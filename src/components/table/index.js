@@ -149,7 +149,7 @@ const UserTable = () => {
         // setLoading(false);
         // alert("Invalid Credentials");
         console.log("The error", err)
-        });
+      });
   }, [])
 
 
