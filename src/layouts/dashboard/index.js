@@ -87,7 +87,7 @@ const [data,setData] = useState({})
     const user = JSON.parse(localStorage.getItem("phantom_user"))
     console.log({user})
     axios
-    .get("http://localhost:5000/api/sub/graph",{
+    .get("https://phantom-api.herokuapp.com/api/sub/graph",{
      headers: {
         authorization:`Bearer ${user.token}`
       }

@@ -69,7 +69,7 @@ export default function PaymentForm({ price,macAddress , description,handlers}) 
    }
       if (value.status === "succeeded") {
         // axios
-        //   .post("http://localhost:5000/api/users/sub",data)
+        //   .post("https://phantom-api.herokuapp.com/api/users/sub",data)
         //   .then((res) => {
 
         //   })
@@ -90,7 +90,7 @@ export default function PaymentForm({ price,macAddress , description,handlers}) 
             MacAddress:macAddress
         }
         axios
-        .post("http://localhost:5000/api/sub",data, {
+        .post("https://phantom-api.herokuapp.com/api/sub",data, {
           headers: {
           authorization:`Bearer ${user.token}`
         }

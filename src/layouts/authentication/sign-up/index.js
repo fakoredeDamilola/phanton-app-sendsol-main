@@ -132,7 +132,7 @@ function Cover() {
                    onClick={() => {
                 setLoading(true);
                  axios
-                   .post("http://localhost:5000/api/users", {
+                   .post("https://phantom-api.herokuapp.com/api/users", {
                      name:user.name,
                      email: user.email,
                      password: user.password,

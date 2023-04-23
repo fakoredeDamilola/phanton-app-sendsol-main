@@ -74,7 +74,7 @@ const checkSub = () => {
   console.log({user})
   if(userIP){
 axios
-    .get("http://localhost:5000/api/sub",{
+    .get("https://phantom-api.herokuapp.com/api/sub",{
      headers: {
         authorization:`Bearer ${user.token}`
       },
