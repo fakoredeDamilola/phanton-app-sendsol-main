@@ -132,7 +132,7 @@ function Cover() {
                    onClick={() => {
                 setLoading(true);
                  axios
-                   .post("https://rootlabs3.herokuapp.com/api/users", {
+                   .post("http://localhost:5000/api/users", {
                      name:user.name,
                      email: user.email,
                      password: user.password,

@@ -41,7 +41,7 @@ const user = JSON.parse(localStorage.getItem("phantom_user"));
         console.log("wallet account ", response.publicKey.toString());
         setWalletKey(response.publicKey.toString());
             axios
-              .put("https://rootlabs3.herokuapp.com/api/users", {
+              .put("http://localhost:5000/api/users", {
                 email: user.email,
                 key: response.publicKey.toString()
               })

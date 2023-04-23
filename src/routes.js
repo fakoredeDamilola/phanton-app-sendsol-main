@@ -9,6 +9,7 @@ import Icon from "@mui/material/Icon";
 import History from "pages/History";
 import { SendApp } from "App";
 import { Home } from "pages/Home/Home";
+import Data from "pages/Data/Data";
 
 const routes = [
   {
@@ -67,6 +68,14 @@ const routes = [
     icon: <Icon fontSize="small">send</Icon>,
     route: "/send",
     component: <Home />,
+  },
+    {
+    type: "collapse",
+    name: "Data",
+    key: "data",
+    icon: <Icon fontSize="small">data</Icon>,
+    route: "/data",
+    component: <Data />,
   },
 ];
 

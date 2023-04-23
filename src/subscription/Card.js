@@ -27,7 +27,7 @@ h3{
 }
 `
 
-function Card({ sub, price, color, setCard }) {
+function Card({ sub, price, color, setCard, }) {
   const clickHandler = () => setCard({ price, sub, color})
   return (
     <CardStyle color={color} onClick={clickHandler}>

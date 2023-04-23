@@ -245,7 +245,7 @@ export default function App() {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
   }, [pathname]);
-
+console.log({routes},"kekekele")
   const getRoutes = (allRoutes) =>
     allRoutes.map((route) => {
       if (route.collapse) {

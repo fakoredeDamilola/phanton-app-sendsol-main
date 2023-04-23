@@ -41,7 +41,7 @@ const CARD_OPTIONS = {
   }
 }
 
-export default function PaymentForm({ price , description,handlers}) {
+export default function PaymentForm({ price,macAddress , description,handlers}) {
   const [success, setSuccess] = useState(false)
   // const [alertDetails, setAlertDetails] = useState({ show: false, color: null, message: "" })
   const stripe = useStripe()
@@ -68,15 +68,40 @@ export default function PaymentForm({ price , description,handlers}) {
         "email": "youremail@you.com"
    }
       if (value.status === "succeeded") {
+        // axios
+        //   .post("http://localhost:5000/api/users/sub",data)
+        //   .then((res) => {
+
+        //   })
+        //   .catch((err) => {
+        //     console.log("The error", err)
+        //   });
+
+          alert("yes")
+         
+        const user = JSON.parse(localStorage.getItem("phantom_user"))
+        console.log({user})
+         const data = {
+            name: description,
+            "subRatePerMin": price,
+            "hasActiveSub": true,
+            "email": user.email,
+            durationInMinutes: `${24* 60 *60}`,
+            MacAddress:macAddress
+        }
         axios
-          .post("https://rootlabs3.herokuapp.com/api/users/sub",data)
-          .then((res) => {
-
-          })
-          .catch((err) => {
-            console.log("The error", err)
-          });
-
+        .post("http://localhost:5000/api/sub",data, {
+          headers: {
+          authorization:`Bearer ${user.token}`
+        }
+        })
+        .then((res) => {
+        console.log({res})
+        })
+        .catch((err) => {
+          console.log("The error", err)
+        });
+        
 
         setAlertDetails({ show: true, color: "#4bb543", message: `Your purchase of ${value.description} at $${price} was successful` })
         setShowItem(false)

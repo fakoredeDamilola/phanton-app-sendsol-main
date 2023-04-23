@@ -8,71 +8,25 @@ import MDBox from "components/MDBox";
 // Material Dashboard 2 React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import Footer from "examples/Footer";
-import ReportsBarChart from "examples/Charts/BarCharts/ReportsBarChart";
-import ReportsLineChart from "examples/Charts/LineCharts/ReportsLineChart";
 import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatisticsCard";
 import { Line } from "react-chartjs-2";
 import Axios from "../../axios/Axios";
 import { useState, useEffect } from "react";
 import moment from 'moment';
-
-// Data
-import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
-import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
-
-// Dashboard components
-import Projects from "layouts/dashboard/components/Projects";
-import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
 import '../../assets/css/style.css';
 import StakingCard from './components/StakingCard'
+import axios from "axios";
 
 function Dashboard() {
-  const { sales, tasks } = reportsLineChartData;
 
-  const [humidityData, setHumidityData] = useState([]);
+  const [humidityData, setHumidityData] = useState();
+  const [humidityStatData, setHumidityStatData] = useState([2,3]);
+  const [temperatureData, setTemperatureData] = useState();
+  const [phData, setPHData] = useState();
+  const [phStatData, setStatPHData] = useState([3,4]);
   const [tempData, setTempData] = useState([]);
-  const [phData, setPhData] = useState([]);
-
-  const humidity_data = {
-    labels: humidityData && humidityData.map(humidity => moment(humidity.blockTime * 1000).format('hh:mm:ss')).reverse(),
-    datasets: [
-      {
-        label: "Humidity",
-        data: humidityData && humidityData.map(humidity => humidity.changeAmount / 1000000000).reverse(),
-        fill: true,
-        backgroundColor: "rgba(75,192,192,0.2)",
-        borderColor: "rgba(75,192,192,1)"
-      }
-    ]
-  };
-
-  const temp_data = {
-    labels: tempData && tempData.map(humidity => moment(humidity.blockTime * 1000).format('hh:mm:ss')).reverse(),
-    datasets: [
-      {
-        label: "Temperature (Celsius)",
-        data: tempData && tempData.map(humidity => humidity.changeAmount / 1000000000).reverse(),
-        fill: true,
-        backgroundColor: "rgba(255,0,0,0.2)",
-        borderColor: "rgba(255,0,0,1)"
-      }
-    ]
-  };
-
-  const ph_data = {
-    labels: phData && phData.map(humidity => moment(humidity.blockTime * 1000).format('hh:mm:ss')).reverse(),
-    datasets: [
-      {
-        label: "pH",
-        data: phData && phData.map(humidity => humidity.changeAmount / 1000000000).reverse(),
-        fill: true,
-        backgroundColor: "rgba(128,0,0,0.2)",
-        borderColor: "rgba(128,0,0,1)"
-      }
-    ]
-  };
-
+ 
+const [data,setData] = useState({})
   const humidityHandler = () => {
     Axios.get(`splTransfers?account=9iYqFPocWJhALeJ1bKPrF7k8La1UtV88XvP8aZTSho7y`)
       .then(response => {
@@ -103,10 +57,87 @@ function Dashboard() {
       });
   }
 
+  // useEffect(() => {
+  //   humidityHandler();
+  //   tempHandler();
+  //   phHandler();
+  // }[]);
+   const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+    },
+    scales: {
+      y:
+        {
+          min: 0,
+          // max: 15,
+          stepSize: 10,
+        },
+      x:
+        {
+          
+        },
+    },
+  };
+
   useEffect(() => {
-    humidityHandler();
-    tempHandler();
-    phHandler();
+    const user = JSON.parse(localStorage.getItem("phantom_user"))
+    console.log({user})
+    axios
+    .get("http://localhost:5000/api/sub/graph",{
+     headers: {
+        authorization:`Bearer ${user.token}`
+      }
+    })
+    .then((res) => {
+      // setLoading(false);
+      console.log({res})
+      
+      // setData(res.data)
+      if(res.data.status){
+        console.log(res.data)
+    
+        const humidityDataset =    [
+          {
+            label:"Humidity",
+            data:new Array(10).fill(Math.round(res.data.humidity)),
+                     borderColor: 'rgb(53, 162, 235)',
+            backgroundColor: 'rgba(53, 162, 235, 0.5)',
+          }
+        ]
+        const temperatureDataset =    [
+          {
+            label:"Temperature",
+            data:new Array(10).fill(Math.round(res.data.temperature)),
+                        borderColor: 'rgb(255, 99, 132)',
+            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+          }
+        ]
+        const phDataset =    [
+          {
+            label:"phValue",
+            data:new Array(10).fill(Math.round(Math.round(res.data.phVal))),
+                        borderColor: 'rgb(25, 99, 232)',
+            backgroundColor: 'rgba(55, 99, 32, 0.5)',
+          }
+        ]
+
+        setHumidityData({labels:[1,2,3,4,5,6,7,8,9,10],datasets:humidityDataset})
+        setTemperatureData({labels:[1,2,3,4,5,6,7,8,9,10],datasets:temperatureDataset})
+        setPHData({labels:[1,2,3,4,5,6,7,8,9,10],datasets:phDataset})
+       
+      }else {
+        setShowErrorMessage(` not found`)
+      }
+    })
+    .catch((err) => {
+      // setLoading(false);
+      // alert("Invalid Credentials");
+      console.log("The error", err)
+      });
   }, []);
 
   useEffect(() => {
@@ -133,7 +164,7 @@ function Dashboard() {
                 color="dark"
                 icon="ac_unit"
                 title="Last Humidity"
-                count={humidityData.length && humidityData[0].changeAmount / 1000000000 + '%'}
+                count={humidityStatData.length && humidityStatData[0].changeAmount / 1000000000 + '%'}
                 percentage={{
                   color: "success",
                   amount: "+55%",
@@ -162,7 +193,7 @@ function Dashboard() {
                 color="success"
                 icon="auto_graph"
                 title="Last pH"
-                count={phData.length && (phData[0].changeAmount / 1000000000).toFixed(2)}
+                count={phStatData.length && (phStatData[0].changeAmount / 1000000000).toFixed(2)}
                 percentage={{
                   color: "success",
                   amount: "+1%",
@@ -187,14 +218,14 @@ function Dashboard() {
             </MDBox>
           </Grid>
         </Grid>
-        <Grid container>
+   {data ?   <Grid container>
           <Grid item xs={9}>
             <MDBox mt={4.5}>
               <Grid container spacing={3}>
                 <Grid item xs={12} md={12} lg={12}>
                   <MDBox mb={3}>
                     <div className="humidity-tooltip">
-                      <Line data={humidity_data} />
+                      <Line data={humidityData} />
                       <span class="humidity-tooltiptext">{`https://public-api.solscan.io/account/splTransfers?account=9iYqFPocWJhALeJ1bKPrF7k8La1UtV88XvP8aZTSho7y`}</span>
                     </div>
                   </MDBox>
@@ -208,7 +239,7 @@ function Dashboard() {
                 <Grid item xs={12} md={12} lg={12}>
                   <MDBox mb={3}>
                     <div className="temp-tooltip">
-                      <Line data={temp_data} />
+                      <Line data={temperatureData} options={options}  />
                       <span class="temp-tooltiptext">{`https://public-api.solscan.io/account/splTransfers?account=9iYqFPocWJhALeJ1bKPrF7k8La1UtV88XvP8aZTSho7y`}</span>
                     </div>
                   </MDBox>
@@ -222,7 +253,7 @@ function Dashboard() {
                 <Grid item xs={12} md={12} lg={12}>
                   <MDBox mb={3}>
                     <div className="tooltip">
-                      <Line data={ph_data} />
+                      <Line data={phData} options={options}  />
                       <span class="tooltiptext">{`https://public-api.solscan.io/account/splTransfers?account=FmA4MZVTtY8nKqUZY3voVc6yK6n6R3hh4dH9AxfmWJRb`}</span>
                     </div>
                   </MDBox>
@@ -230,7 +261,15 @@ function Dashboard() {
               </Grid>
             </MDBox>
           </Grid>
-        </Grid>
+        </Grid> : <MDBox sx={{
+           width:"100%",
+           color:"white",
+           fontSize:"16px",
+           display:"flex",
+           justifyContent:"center",
+           margin:"20px",
+           padding:"30px"
+        }}>No Mac Connected</MDBox>}
       </MDBox>
     </DashboardLayout>
   );

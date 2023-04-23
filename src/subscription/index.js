@@ -1,9 +1,10 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Styled from "styled-components"
 import { useNavigate } from 'react-router-dom'
 import Card from "./Card"
 import Payment from "./Payment/index"
 import Table from "../components/table"
+import axios from 'axios'
 
 
 
