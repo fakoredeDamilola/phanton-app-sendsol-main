@@ -137,7 +137,7 @@ function Basic() {
                 } }
                 variant="gradient"
                 color="info"
-                fullWidth
+                // fullWidth
               >
                 sign in <ClipLoader loading={ loading } size={ 25 } />
               </MDButton>
