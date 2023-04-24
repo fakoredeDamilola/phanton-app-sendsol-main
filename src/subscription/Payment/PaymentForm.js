@@ -41,11 +41,7 @@ const CARD_OPTIONS = {
   }
 }
 
-<<<<<<< HEAD
 export default function PaymentForm({ price,macAddress , description,handlers}) {
-=======
-export default function PaymentForm({ price, description, handlers }) {
->>>>>>> 75f1ca32397653e4db6d730a604d0b581930bbdc
   const [success, setSuccess] = useState(false)
   // const [alertDetails, setAlertDetails] = useState({ show: false, color: null, message: "" })
   const stripe = useStripe()

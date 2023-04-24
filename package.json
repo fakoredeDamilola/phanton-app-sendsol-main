@@ -61,7 +61,8 @@
     "stylis": "4.0.13",
     "stylis-plugin-rtl": "2.1.1",
     "web-vitals": "2.1.4",
-    "yup": "0.32.11"
+    "yup": "0.32.11",
+    "zlib": "^1.0.5"
   },
   "scripts": {
     "start": "react-app-rewired start",
