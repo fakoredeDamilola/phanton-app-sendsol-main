@@ -38,6 +38,33 @@ impl NFTStakingContract {
         true
     }
     
+      //an implementation for keeping track of the days staked
+      //in order to create some kind of streak
+      //leading to the gamification of the site
+    pub fn days_staked_tracker(&mut self, staked_amount: u64, days_staked: u64) -> u64{
+      if staked_amount != 0 {
+        days_staked += 1;
+      }
+      days_staked
+    }
+    
+    //streak bonus
+    pub fn streak_bonus_eligibility(&mut self, days_staked: u64)-> bool{
+      if days_staked % 10 == 0 {
+        true
+      }
+      false
+    }
+
+    pub fn streak_bonus(&mut self,reward_factor_per_day: u64, days_staked: u64)-> u64{
+      let ten_days_streak = self.streak_bonus_eligibility(days_staked);
+        if ten_days_streak == true {
+          reward_factor_per_day += days_staked / 100;
+          reward_factor_per_day
+       }
+       reward_factor_per_day
+    }
+
     pub fn transfer(&mut self, to: &Pubkey, amount: u64) {
         self.balances.get_mut(to).map(|balance| *balance += amount);
         self.balances.get_mut(&self.program_id).map(|balance| *balance -= amount);
@@ -52,6 +79,8 @@ impl NFTStakingContract {
   }
 
      pub fn calculate_rewards(&self, staked_tokens: u64, days_staked: u64) -> u64 {
+        let long_streak = self.streak_bonus(days_staked);
+        if long_streak == 0
         let rewards = staked_tokens * self.reward_factor_per_day * days_staked;
         rewards
       }
@@ -61,10 +90,11 @@ impl NFTStakingContract {
       if staked_tokens == 0 {
        return Err(Error::from_str("You must stake tokens before claiming rewards"));
       }
-    
+      
       let days_staked = 0; // Declare the variable before using it
-      let rewards = self.calculate_rewards(staked_tokens, days_staked);
-    
+      let rewards = self.calculate_rewards(staked_tokens, days_staked)//this wil always result to zero;
+      
+      
       self.transfer(account_id, rewards);
       Ok(())
     }
