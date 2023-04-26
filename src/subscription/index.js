@@ -47,13 +47,44 @@ function Subscription() {
   }
   const navigate = useNavigate()
 
+  const subscribeUser = () =>{
+    alert("this is a test subscription for every minute")
+    const user = JSON.parse(localStorage.getItem("phantom_user"))
+        console.log({user})
+    const data = {
+      name: "1 min sub",
+      "subRatePerMin": 1,
+      "hasActiveSub": true,
+      "email": user.email,
+      durationInMinutes: `${24* 60 *60}`,
+      MacAddress:macAddress
+  }
+  axios
+  .post("http://localhost:5000/api/sub",data, {
+    headers: {
+    authorization:`Bearer ${user.token}`
+  }
+  })
+  .then((res) => {
+  console.log({res})
+  })
+  .catch((err) => {
+    console.log("The error", err)
+  });
+  
+  }
   return (
     <>
       <button style={ { margin: "4rem 2rem 0", border: "none", boxShadow: "none", fontSize: "1.5rem" } } onClick={ card ? () => setCard(null) : () => navigate("/dashboard") } > { "<" } back</button>
       { !card ? <Wrapper>
         <h3 className='title'>Subscription and Pricing</h3>
-        <div className='container'>
-          { options.map((el, index) => <Card key={ el.sub } sub={ el.sub } price={ el.price } color={ el.color } setCard={ setCard } />) }
+        <div className='container' onClick={()=>subscribeUser()}>
+          { options.map((el, index) => 
+          <Card key={ el.sub } sub={ el.sub } price={ el.price } color={ el.color } 
+          // setCard={ setCard }
+          setCard={subscribeUser }
+           />
+          ) }
         </div>
       </Wrapper> : <Payment price={ card.price } sub={ card.sub } color={ card.color } setCard={ () => null } /> }
     </>
@@ -61,3 +92,4 @@ function Subscription() {
 }
 
 export default Subscription
+

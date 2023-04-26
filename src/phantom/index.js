@@ -41,7 +41,7 @@ const Phantom = () => {
         console.log("wallet account ", response.publicKey.toString());
         setWalletKey(response.publicKey.toString());
             axios
-              .put("https://phantom-api.herokuapp.com/api/users", {
+              .put("http://localhost:5000/api/users", {
                 email: user.email,
                 key: response.publicKey.toString()
               })
