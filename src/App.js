@@ -22,7 +22,7 @@ import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Icon from "@mui/material/Icon";
-
+ // Add this
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 
@@ -68,19 +68,12 @@ import { useSnackbar } from "notistack";
 import React, { useCallback } from "react";
 import { Home } from "./pages/Home/Home";
 import { Theme } from "./Theme";
-import { Theme as MintApp } from "components/common/Theme";
-import Subscription from "subscription";
-
-
-
-
-
 
 
 
 export const AlertContext = createContext();
 
-
+// const socket = io.connect('http://localhost:4000');
 const Context = ({ children }) => {
   // The network can be set to 'devnet', 'testnet', or 'mainnet-beta'.
   const network = WalletAdapterNetwork.Mainnet;
@@ -245,7 +238,6 @@ export default function App() {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
   }, [pathname]);
-console.log({routes},"kekekele")
   const getRoutes = (allRoutes) =>
     allRoutes.map((route) => {
       if (route.collapse) {

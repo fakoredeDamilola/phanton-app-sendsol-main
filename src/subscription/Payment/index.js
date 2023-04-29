@@ -41,7 +41,7 @@ function Index({price, sub, color}) {
     let avail = false
     if(userIP){
   const data =await axios
-      .get("http://localhost:5000/api/sub",{
+      .get("https://phantom-api.herokuapp.com/api/sub",{
        headers: {
           authorization:`Bearer ${user.token}`
         },

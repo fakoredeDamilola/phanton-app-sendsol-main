@@ -122,7 +122,7 @@ function Basic() {
               setLoading(true);
               // signInWithEmailAndPassword(auth, user.email, user.password)
         axios
-          .post("http://localhost:5000/api/users/login",{email:user.email, password:user.password})
+          .post("https://phantom-api.herokuapp.com/api/users/login",{email:user.email, password:user.password})
           .then((res) => {
             setLoading(false);
             console.log(res)

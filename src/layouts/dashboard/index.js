@@ -16,15 +16,18 @@ import moment from 'moment';
 import '../../assets/css/style.css';
 import StakingCard from './components/StakingCard'
 import axios from "axios";
+import { io } from "socket.io-client";
 
 function Dashboard() {
 
-  const [humidityData, setHumidityData] = useState();
-  const [humidityStatData, setHumidityStatData] = useState([2,3]);
-  const [temperatureData, setTemperatureData] = useState();
-  const [phData, setPHData] = useState();
-  const [phStatData, setStatPHData] = useState([3,4]);
-  const [tempData, setTempData] = useState([]);
+  // const socket = io.connect("http://localhost:5000");
+  const [socket,setSocket] = useState(null)
+  const [humidityData, setHumidityData] = useState([]);
+  const [humidityStatData, setHumidityStatData] = useState(0);
+  const [temperatureData, setTemperatureData] = useState([]);
+  const [phData, setPHData] = useState([]);
+  const [phStatData, setStatPHData] = useState(0);
+  const [tempData, setTempData] = useState(0);
  
 const [data,setData] = useState({})
   const humidityHandler = () => {
@@ -40,28 +43,50 @@ const [data,setData] = useState({})
   const tempHandler = () => {
     Axios.get(`splTransfers?account=FCgYUwNW3Dts3dteLQjQWwz5E6gytJgLDVcCqYXB7u4k`)
       .then(response => {
-        setTempData(response.data.data);
+        // setTempData(response.data.data);
       })
       .catch(error => {
         console.log({ error });
       });
   }
+
+  useEffect(
+    () => {
+  setSocket(io("http://localhost:5000"));//https://autoswap-server.herokuapp.com
+  
+    },
+    []
+  )
+
+//   io.on("connection", (socket) => {
+//     console.log(`⚡: ${socket.id} user just connected!`);
+
+//     socket.on("taskDragged", (data) => {
+//         console.log(data);
+//     });
+
+//     socket.on("disconnect", () => {
+//         socket.disconnect();
+//         console.log("🔥: A user disconnected");
+//     });
+// });
+useEffect(() => {
+  socket?.on("success",(res)=>{
+  updateAllState(res)
+  })
+}, [socket]);
+
 
   const phHandler = () => {
     Axios.get(`splTransfers?account=FmA4MZVTtY8nKqUZY3voVc6yK6n6R3hh4dH9AxfmWJRb`)
       .then(response => {
-        setPhData(response.data.data);
+        // setPhData(response.data.data);
       })
       .catch(error => {
         console.log({ error });
       });
   }
 
-  // useEffect(() => {
-  //   humidityHandler();
-  //   tempHandler();
-  //   phHandler();
-  // }[]);
    const options = {
     responsive: true,
     plugins: {
@@ -94,42 +119,14 @@ const [data,setData] = useState({})
     })
     .then((res) => {
       // setLoading(false);
+      console.log("jndnjdj")
       console.log({res})
-      
+    
       // setData(res.data)
       if(res.data.status){
-        console.log(res.data)
-    
-        const humidityDataset =    [
-          {
-            label:"Humidity",
-            data:new Array(10).fill(Math.round(res.data.humidity)),
-                     borderColor: 'rgb(53, 162, 235)',
-            backgroundColor: 'rgba(53, 162, 235, 0.5)',
-          }
-        ]
-        const temperatureDataset =    [
-          {
-            label:"Temperature",
-            data:new Array(10).fill(Math.round(res.data.temperature)),
-                        borderColor: 'rgb(255, 99, 132)',
-            backgroundColor: 'rgba(255, 99, 132, 0.5)',
-          }
-        ]
-        const phDataset =    [
-          {
-            label:"phValue",
-            data:new Array(10).fill(Math.round(Math.round(res.data.phVal))),
-                        borderColor: 'rgb(25, 99, 232)',
-            backgroundColor: 'rgba(55, 99, 32, 0.5)',
-          }
-        ]
-
-        setHumidityData({labels:[1,2,3,4,5,6,7,8,9,10],datasets:humidityDataset})
-        setTemperatureData({labels:[1,2,3,4,5,6,7,8,9,10],datasets:temperatureDataset})
-        setPHData({labels:[1,2,3,4,5,6,7,8,9,10],datasets:phDataset})
-       
+      updateAllState(res)
       }else {
+        console.log("error poo")
         setShowErrorMessage(` not found`)
       }
     })
@@ -139,6 +136,41 @@ const [data,setData] = useState({})
       console.log("The error", err)
       });
   }, []);
+const updateAllState = (res) =>{
+  setHumidityStatData(res.data.humidity)
+  setTempData(res.data.temperature)
+  setStatPHData(res.data.phVal);
+    const humidityDataset =    [
+      {
+        label:"Humidity",
+        data:new Array(10).fill(Math.round(res.data.humidity)),
+                 borderColor: 'rgb(53, 162, 235)',
+        backgroundColor: 'rgba(53, 162, 235, 0.5)',
+      }
+    ]
+    const temperatureDataset =    [
+      {
+        label:"Temperature",
+        data:new Array(10).fill(Math.round(res.data.temperature)),
+                    borderColor: 'rgb(255, 99, 132)',
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+      }
+    ]
+    const phDataset =    [
+      {
+        label:"phValue",
+        data:new Array(10).fill(Math.round(Math.round(res.data.phVal))),
+                    borderColor: 'rgb(25, 99, 232)',
+        backgroundColor: 'rgba(55, 99, 32, 0.5)',
+      }
+    ]
+
+    setHumidityData({labels:[1,2,3,4,5,6,7,8,9,10],datasets:humidityDataset})
+    setTemperatureData({labels:[1,2,3,4,5,6,7,8,9,10],datasets:temperatureDataset})
+    setPHData({labels:[1,2,3,4,5,6,7,8,9,10],datasets:phDataset})
+   
+}
+
 
   useEffect(() => {
     const myInterval = setInterval(function () {
@@ -164,12 +196,13 @@ const [data,setData] = useState({})
                 color="dark"
                 icon="ac_unit"
                 title="Last Humidity"
-                count={humidityStatData.length && humidityStatData[0].changeAmount / 1000000000 + '%'}
-                percentage={{
-                  color: "success",
-                  amount: "+55%",
-                  label: "than lask week",
-                }}
+                // count={humidityStatData.length && humidityStatData[0].changeAmount / 1000000000 + '%'}
+                count={humidityStatData+ '%'}
+                // percentage={{
+                //   color: "success",
+                //   amount: "+55%",
+                //   label: "than lask week",
+                // }}
               />
             </MDBox>
           </Grid>
@@ -178,12 +211,12 @@ const [data,setData] = useState({})
               <ComplexStatisticsCard
                 icon="device_thermostat"
                 title="Last Temperature"
-                count={tempData.length && tempData[0].changeAmount / 1000000000 + ' Celsius'}
-                percentage={{
-                  color: "success",
-                  amount: "+3%",
-                  label: "than last month",
-                }}
+                count={tempData+ ' Celsius'}
+                // percentage={{
+                //   color: "success",
+                //   amount: "+3%",
+                //   label: "than last month",
+                // }}
               />
             </MDBox>
           </Grid>
@@ -193,12 +226,12 @@ const [data,setData] = useState({})
                 color="success"
                 icon="auto_graph"
                 title="Last pH"
-                count={phStatData.length && (phStatData[0].changeAmount / 1000000000).toFixed(2)}
-                percentage={{
-                  color: "success",
-                  amount: "+1%",
-                  label: "than yesterday",
-                }}
+                count={phStatData}
+                // percentage={{
+                //   color: "success",
+                //   amount: "+1%",
+                //   label: "than yesterday",
+                // }}
               />
             </MDBox>
           </Grid>

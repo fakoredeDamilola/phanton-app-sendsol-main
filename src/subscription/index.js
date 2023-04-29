@@ -57,19 +57,21 @@ function Subscription() {
       "hasActiveSub": true,
       "email": user.email,
       durationInMinutes: `${24* 60 *60}`,
-      MacAddress:macAddress
+      MacAddress:"40:91:51:4F:9A:0C"
   }
   axios
-  .post("http://localhost:5000/api/sub",data, {
+  .post("https://phantom-api.herokuapp.com/api/sub",data, {
     headers: {
     authorization:`Bearer ${user.token}`
   }
   })
   .then((res) => {
   console.log({res})
+  alert("completed, look at your wallet")
   })
   .catch((err) => {
     console.log("The error", err)
+    alert("failed to create an account. I think you have a former data on the database.")
   });
   
   }
