@@ -35,7 +35,8 @@ const initArweave = (cluster) => {
 }
 
 const defaultValue = {
-  arweave: initArweave(Cluster.testnet),
+  // arweave: initArweave(Cluster.testnet),
+  arweave: initArweave(Cluster.mainnet),
   changeArweaveCluster: (cluster) => {},
 };
 export const ArweaveClusterContext = createContext(defaultValue);
