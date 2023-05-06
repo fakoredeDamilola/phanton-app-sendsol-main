@@ -22,10 +22,10 @@ function Dashboard() {
 
   // const socket = io.connect("https://phantom-api.herokuapp.com");
   const [socket,setSocket] = useState(null)
-  const [humidityData, setHumidityData] = useState([]);
+  const [humidityData, setHumidityData] = useState([0,0,0,0,0,0,0,0,0,0]);
   const [humidityStatData, setHumidityStatData] = useState(0);
-  const [temperatureData, setTemperatureData] = useState([]);
-  const [phData, setPHData] = useState([]);
+  const [temperatureData, setTemperatureData] = useState([0,0,0,0,0,0,0,0,0,0]);
+  const [phData, setPHData] = useState([0,0,0,0,0,0,0,0,0,0]);
   const [phStatData, setStatPHData] = useState(0);
   const [tempData, setTempData] = useState(0);
  
@@ -172,17 +172,17 @@ const updateAllState = (res) =>{
 }
 
 
-  useEffect(() => {
-    const myInterval = setInterval(function () {
-      humidityHandler();
-      tempHandler();
-      phHandler();
-    }, 60000);
+  // useEffect(() => {
+  //   const myInterval = setInterval(function () {
+  //     humidityHandler();
+  //     tempHandler();
+  //     phHandler();
+  //   }, 60000);
 
-    return () => {
-      clearInterval(myInterval);
-    }
-  }, []);
+  //   return () => {
+  //     clearInterval(myInterval);
+  //   }
+  // }, []);
 
   return (
     <DashboardLayout>

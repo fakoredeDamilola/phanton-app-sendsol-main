@@ -90,7 +90,7 @@ export default function PaymentForm({ price,macAddress , description,handlers}) 
             MacAddress:macAddress
         }
         axios
-        .post("https://phantom-api.herokuapp.com/api/sub",data, {
+        .post("http://localhost:5000/api/sub",data, {
           headers: {
           authorization:`Bearer ${user.token}`
         }

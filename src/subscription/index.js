@@ -59,8 +59,9 @@ function Subscription() {
       durationInMinutes: `${24* 60 *60}`,
       MacAddress:"40:91:51:4F:9A:0C"
   }
+  console.log({data})
   axios
-  .post("https://phantom-api.herokuapp.com/api/sub",data, {
+  .post("http://localhost:5000/api/sub",data, {
     headers: {
     authorization:`Bearer ${user.token}`
   }
