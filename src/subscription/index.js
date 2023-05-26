@@ -51,13 +51,16 @@ function Subscription() {
     alert("this is a test subscription for every minute")
     const user = JSON.parse(localStorage.getItem("phantom_user"))
         console.log({user})
+        let macAddress = JSON.parse(localStorage.getItem("IPData"))
+        console.log({macAddress})
+        
     const data = {
       name: "1 min sub",
       "subRatePerMin": 1,
       "hasActiveSub": true,
       "email": user.email,
       durationInMinutes: `${24* 60 *60}`,
-      MacAddress:"40:91:51:4F:9A:0C"
+      MacAddress:macAddress.data[0].IP ?? "40:91:51:4F:9A:0C"
   }
   console.log({data})
   axios

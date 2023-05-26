@@ -12,24 +12,50 @@ import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatist
 import { Line } from "react-chartjs-2";
 import Axios from "../../axios/Axios";
 import { useState, useEffect } from "react";
-import moment from 'moment';
 import '../../assets/css/style.css';
 import StakingCard from './components/StakingCard'
 import axios from "axios";
 import { io } from "socket.io-client";
+import { Link } from "react-router-dom";
 
 function Dashboard() {
 
-  // const socket = io.connect("https://phantom-api.herokuapp.com");
+  // const socket = io.connect("http://localhost:5000");
   const [socket,setSocket] = useState(null)
+  const [options,setOptions] = useState({
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+    },
+    scales: {
+      y:
+        {
+          min: 0,
+          // max: 15,
+          stepSize: 10,
+        },
+      x:
+        {
+          ticks:{
+            values:new Array(10).fill(12)
+          }
+        },
+    },
+  })
   const [humidityData, setHumidityData] = useState([0,0,0,0,0,0,0,0,0,0]);
   const [humidityStatData, setHumidityStatData] = useState(0);
   const [temperatureData, setTemperatureData] = useState([0,0,0,0,0,0,0,0,0,0]);
   const [phData, setPHData] = useState([0,0,0,0,0,0,0,0,0,0]);
   const [phStatData, setStatPHData] = useState(0);
+  const [tempToken, setTempToken] = useState("");
+  const [humidityToken, setHumidityToken] = useState("");
+  const [PHToken, setPHToken] = useState("");
   const [tempData, setTempData] = useState(0);
+  const [errorMessage,setShowErrorMessage] = useState(false)
  
-const [data,setData] = useState({})
+const [time,setTime] = useState(null)
   const humidityHandler = () => {
     Axios.get(`splTransfers?account=9iYqFPocWJhALeJ1bKPrF7k8La1UtV88XvP8aZTSho7y`)
       .then(response => {
@@ -52,7 +78,7 @@ const [data,setData] = useState({})
 
   useEffect(
     () => {
-  setSocket(io("https://phantom-api.herokuapp.com"));
+  setSocket(io("http://localhost:5000"));
   
     },
     []
@@ -87,32 +113,32 @@ useEffect(() => {
       });
   }
 
-   const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top',
-      },
-    },
-    scales: {
-      y:
-        {
-          min: 0,
-          // max: 15,
-          stepSize: 10,
-        },
-      x:
-        {
+  //  const options = {
+  //   responsive: true,
+  //   plugins: {
+  //     legend: {
+  //       position: 'top',
+  //     },
+  //   },
+  //   scales: {
+  //     y:
+  //       {
+  //         min: 0,
+  //         // max: 15,
+  //         stepSize: 10,
+  //       },
+  //     x:
+  //       {
           
-        },
-    },
-  };
+  //       },
+  //   },
+  // };
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("phantom_user"))
     console.log({user})
     axios
-    .get("https://phantom-api.herokuapp.com/api/sub/graph",{
+    .get("http://localhost:5000/api/sub/graph",{
      headers: {
         authorization:`Bearer ${user.token}`
       }
@@ -125,9 +151,10 @@ useEffect(() => {
       // setData(res.data)
       if(res.data.status){
       updateAllState(res)
+      setShowErrorMessage(false)
       }else {
         console.log("error poo")
-        setShowErrorMessage(` not found`)
+        setShowErrorMessage(true)
       }
     })
     .catch((err) => {
@@ -140,6 +167,10 @@ const updateAllState = (res) =>{
   setHumidityStatData(res.data.humidity)
   setTempData(res.data.temperature)
   setStatPHData(res.data.phVal);
+  setTempToken(res.data.tempToken)
+  setHumidityToken(res.data.humidityToken)
+  setPHToken(res.data.phToken)
+setTime(res.data.date.split(" ").slice(0,5).join(" "))
     const humidityDataset =    [
       {
         label:"Humidity",
@@ -148,6 +179,26 @@ const updateAllState = (res) =>{
         backgroundColor: 'rgba(53, 162, 235, 0.5)',
       }
     ]
+    setOptions({
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'top',
+        },
+      },
+      scales: {
+        y:
+          {
+            min: 40,
+            // max: 15,
+            stepSize: 2,
+          },
+        x:
+          {
+            // type:'time'
+          },
+      },
+    })
     const temperatureDataset =    [
       {
         label:"Temperature",
@@ -251,7 +302,7 @@ const updateAllState = (res) =>{
             </MDBox>
           </Grid>
         </Grid>
-   {data ?   <Grid container>
+   {!errorMessage ?   <Grid container>
           <Grid item xs={9}>
             <MDBox mt={4.5}>
               <Grid container spacing={3}>
@@ -259,8 +310,9 @@ const updateAllState = (res) =>{
                   <MDBox mb={3}>
                     <div className="humidity-tooltip">
                       <Line data={humidityData} />
-                      <span class="humidity-tooltiptext">{`https://public-api.solscan.io/account/splTransfers?account=9iYqFPocWJhALeJ1bKPrF7k8La1UtV88XvP8aZTSho7y`}</span>
+                      <span class="humidity-tooltiptext">{`https://public-api.solscan.io/account/splTransfers?account=${humidityToken}`}</span>
                     </div>
+                    <p>{time}</p>
                   </MDBox>
                 </Grid>
               </Grid>
@@ -273,8 +325,9 @@ const updateAllState = (res) =>{
                   <MDBox mb={3}>
                     <div className="temp-tooltip">
                       <Line data={temperatureData} options={options}  />
-                      <span class="temp-tooltiptext">{`https://public-api.solscan.io/account/splTransfers?account=9iYqFPocWJhALeJ1bKPrF7k8La1UtV88XvP8aZTSho7y`}</span>
+                      <span class="temp-tooltiptext">{`https://public-api.solscan.io/account/splTransfers?account=${tempToken}`}</span>
                     </div>
+                    <p>{time}</p>
                   </MDBox>
                 </Grid>
               </Grid>
@@ -287,8 +340,9 @@ const updateAllState = (res) =>{
                   <MDBox mb={3}>
                     <div className="tooltip">
                       <Line data={phData} options={options}  />
-                      <span class="tooltiptext">{`https://public-api.solscan.io/account/splTransfers?account=FmA4MZVTtY8nKqUZY3voVc6yK6n6R3hh4dH9AxfmWJRb`}</span>
+                      <span class="tooltiptext">{`https://public-api.solscan.io/account/splTransfers?account=${PHToken}`}</span>
                     </div>
+                    <p>{time}</p>
                   </MDBox>
                 </Grid>
               </Grid>
@@ -302,7 +356,7 @@ const updateAllState = (res) =>{
            justifyContent:"center",
            margin:"20px",
            padding:"30px"
-        }}>No Mac Connected</MDBox>}
+        }}>No Mac Connected,please add it on the <Link to="/data"> data page</Link> to see live data</MDBox>}
       </MDBox>
     </DashboardLayout>
   );

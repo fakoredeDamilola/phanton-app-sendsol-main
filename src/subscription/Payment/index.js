@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import StripeContainer from './StripeContainer';
 import Card from 'subscription/Card';
@@ -6,6 +6,7 @@ import { Alert } from 'subscription/Alert';
 import MDBox from 'components/MDBox';
 import MDInput from 'components/MDInput';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 
 
@@ -33,6 +34,14 @@ function Index({price, sub, color}) {
   const [userIP,setUserIP] = useState("")
   const [showErrorMessage,setShowErrorMessage] = useState("")
   const [available,setAvailable] = useState(false)
+  useEffect(()=>{
+   let macAddress = JSON.parse(localStorage.getItem("IPData"))
+   console.log({macAddress})
+   if(macAddress.data[0].IP){
+    console.log(123)
+    setUserIP(macAddress.data[0].IP)
+   }
+  },[])
   const [alertDetails, setAlertDetails] = useState({ show: false, message: "", color: "black" })
   const subString = (sub >= 60) ? `${sub / 60} ${(sub / 60 > 1) ? " hours" : " hour"}` : `${sub} ${(sub > 1) ? " minutes" : "minute"}`;
   const checkSub =async () => {
@@ -41,7 +50,7 @@ function Index({price, sub, color}) {
     let avail = false
     if(userIP){
   const data =await axios
-      .get("https://phantom-api.herokuapp.com/api/sub",{
+      .get("http://localhost:5000/api/sub",{
        headers: {
           authorization:`Bearer ${user.token}`
         },
@@ -72,9 +81,8 @@ function Index({price, sub, color}) {
     
   }
   const checkInfo = async ()=>{
-   let avail = await checkSub()
-   console.log({avail})
-   if(avail){
+   
+   if(userIP){
     setShowItem(true)
 
    }
@@ -101,19 +109,8 @@ function Index({price, sub, color}) {
                 margin:'0 auto',
 							}
 						})} mx={8} mt={4}>
-              <h4>Mac Address</h4>
-              <MDInput
-                onChange={(e) => {
-                  setUserIP(e.target.value);
-                  if(showErrorMessage){
-                    setShowErrorMessage("")
-                  }
-                }}
-                value={userIP}
-                type="string"
-                label="Mac Address"
-                fullWidth
-              />
+              <h4>{userIP}</h4>
+              <p style={{fontSize:"14px"}}>This is your macAddress, that subscription will be added to. please change it on the <Link to="/data">data page</Link> if it is not correct</p>
                {showErrorMessage ?? <MDBox sx={{
     width:"100%",
     backgroundColor:"red",

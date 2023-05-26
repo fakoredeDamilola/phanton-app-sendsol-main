@@ -139,7 +139,7 @@ const UserTable = () => {
     // signInWithEmailAndPassword(auth, user.email, user.password)
 
     axios
-      .get("https://phantom-api.herokuapp.com/api/users/sub")
+      .get("http://localhost:5000/api/users/sub")
       .then((res) => {
         // setLoading(false);
         // console.log(res)

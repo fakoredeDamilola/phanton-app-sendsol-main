@@ -6,6 +6,7 @@ import MDBox from "components/MDBox";
 import MDInput from "components/MDInput";
 import axios from "axios";
 import DataTableHeadCell from "examples/Tables/DataTable/DataTableHeadCell";
+import { ClipLoader } from "react-spinners";
 
 const styles = {
   // [theme.breakpoints.down('md')]: {
@@ -61,26 +62,78 @@ const styles = {
 const Data = () => {
   const [userIP,setUserIP] = useState("")
   const [errorMessage,setShowErrorMessage] = useState("")
+  const [loading,setLoading] = useState(false)
   const [data, setData] = useState([]);
   
   useEffect(() => {
     // setLoading(true);
     // signInWithEmailAndPassword(auth, user.email, user.password)
-   console.log({data})
-  }, [data])
+  //  const IPData = JSON.parse(localStorage.getItem("IPData")) 
+   
+  //  console.log({IPData})
+  //  if(IPData !== null){
+  //   alert("1")
+  //   setData(IPData.data)
+  //  }else {
+  //   alert("2")
+  //  localStorage.setItem("IPData",null)
+  //  }
+  const user = JSON.parse(localStorage.getItem("phantom_user"))
+  console.log({user})
+  axios
+    .get("http://localhost:5000/api/sub/getmac",{
+     headers: {
+        authorization:`Bearer ${user.token}`
+      },
+     
+    })
+    .then((res) => {
+      // setLoading(false);
+      // setData(res.data)
+      if(res.data.status){
+        // setData(prevData=>prevData[userIP] = res.data.status)
+        console.log(res.data.data,"keke")
+        if(res.data.data.MacAddress){
+const newObject = {
+          id:res.data.data._id,
+          IP:res.data.data.MacAddress,active:true
+        }
+        console.log({newObject})
+        setData([newObject])
+        }
+        // let result = res.data.reading
+        
+        //   setData(prevData=>[newObject])
+        //   const IPData  =JSON.parse(localStorage.getItem("IPData"))
+        //   console.log({IPData})
+      
+        // setUserIP("")
+        
+        // setLoading(false)
+      }else {
+        setShowErrorMessage(`${userIP} not found`)
+        setLoading(false)
+      }
+    })
+    .catch((err) => {
+      setLoading(false);
+      // alert("Invalid Credentials");
+      console.log("The error", err)
+      })
+      .finally(()=> setLoading(false))
+  }, [])
 
 const checkSub = () => {
   const user = JSON.parse(localStorage.getItem("phantom_user"))
   console.log({user})
-  if(userIP){
+  if(userIP !== ""){
+    setLoading(true)
 axios
-    .get("https://phantom-api.herokuapp.com/api/sub",{
+    .post("http://localhost:5000/api/sub/data",{IP:userIP},{
      headers: {
         authorization:`Bearer ${user.token}`
       },
-      params: {
-        IP:userIP
-      }
+     
     })
     .then((res) => {
       // setLoading(false);
@@ -95,20 +148,31 @@ axios
           id:result._id,
           IP:userIP,active:true
         }
-        console.log({newObject})
-        setData(prevData=>[...prevData,newObject])
+        console.log({newObject,data},data.filter(datum => datum !== newObject.id).length===0)
+          setData(prevData=>[newObject])
+          const IPData  =JSON.parse(localStorage.getItem("IPData"))
+          console.log({IPData})
+          if(IPData){
+             localStorage.setItem("IPData",JSON.stringify({data:[newObject]}))
+          }else{
+            localStorage.setItem("IPData",JSON.stringify({data:[newObject]}))
+          }
         setUserIP("")
+        
+        setLoading(false)
       }else {
         setShowErrorMessage(`${userIP} not found`)
+        setLoading(false)
       }
     })
     .catch((err) => {
-      // setLoading(false);
+      setLoading(false);
       // alert("Invalid Credentials");
       console.log("The error", err)
-      });
+      })
+      .finally(()=> setLoading(false))
   }else{
-    alert("werror")
+    setShowErrorMessage("Please input a value")
   }
   
 }
@@ -152,8 +216,10 @@ axios
               sx={[
                styles.sendButtonActive
               ]}
+              variant="gradient"
+              color="info"
             >
-              Send
+              Send <ClipLoader loading={ loading } size={ 25 } />
             </Button>
 
 
