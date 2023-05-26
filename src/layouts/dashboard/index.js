@@ -20,7 +20,7 @@ import { Link } from "react-router-dom";
 
 function Dashboard() {
 
-  // const socket = io.connect("http://localhost:5000");
+  // const socket = io.connect("https://phantom-api.herokuapp.com");
   const [socket,setSocket] = useState(null)
   const [options,setOptions] = useState({
     responsive: true,
@@ -78,7 +78,7 @@ const [time,setTime] = useState(null)
 
   useEffect(
     () => {
-  setSocket(io("http://localhost:5000"));
+  setSocket(io("https://phantom-api.herokuapp.com"));
   
     },
     []
@@ -138,7 +138,7 @@ useEffect(() => {
     const user = JSON.parse(localStorage.getItem("phantom_user"))
     console.log({user})
     axios
-    .get("http://localhost:5000/api/sub/graph",{
+    .get("https://phantom-api.herokuapp.com/api/sub/graph",{
      headers: {
         authorization:`Bearer ${user.token}`
       }

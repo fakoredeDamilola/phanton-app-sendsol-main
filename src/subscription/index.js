@@ -64,7 +64,7 @@ function Subscription() {
   }
   console.log({data})
   axios
-  .post("http://localhost:5000/api/sub",data, {
+  .post("https://phantom-api.herokuapp.com/api/sub",data, {
     headers: {
     authorization:`Bearer ${user.token}`
   }

@@ -81,7 +81,7 @@ const Data = () => {
   const user = JSON.parse(localStorage.getItem("phantom_user"))
   console.log({user})
   axios
-    .get("http://localhost:5000/api/sub/getmac",{
+    .get("https://phantom-api.herokuapp.com/api/sub/getmac",{
      headers: {
         authorization:`Bearer ${user.token}`
       },
@@ -129,7 +129,7 @@ const checkSub = () => {
   if(userIP !== ""){
     setLoading(true)
 axios
-    .post("http://localhost:5000/api/sub/data",{IP:userIP},{
+    .post("https://phantom-api.herokuapp.com/api/sub/data",{IP:userIP},{
      headers: {
         authorization:`Bearer ${user.token}`
       },
