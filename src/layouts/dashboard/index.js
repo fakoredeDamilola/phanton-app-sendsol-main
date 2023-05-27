@@ -22,28 +22,28 @@ function Dashboard() {
 
   // const socket = io.connect("https://phantom-api.herokuapp.com");
   const [socket,setSocket] = useState(null)
-  const [options,setOptions] = useState({
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top',
-      },
-    },
-    scales: {
-      y:
-        {
-          min: 0,
-          // max: 15,
-          stepSize: 10,
-        },
-      x:
-        {
-          ticks:{
-            values:new Array(10).fill(12)
-          }
-        },
-    },
-  })
+  // const [options,setOptions] = useState({
+  //   responsive: true,
+  //   plugins: {
+  //     legend: {
+  //       position: 'top',
+  //     },
+  //   },
+  //   scales: {
+  //     y:
+  //       {
+  //         min: 0,
+  //         // max: 15,
+  //         stepSize: 10,
+  //       },
+  //     x:
+  //       {
+  //         // ticks:{
+  //         //   values:new Array(10).fill(12)
+  //         // }
+  //       },
+  //   },
+  // })
   const [humidityData, setHumidityData] = useState([0,0,0,0,0,0,0,0,0,0]);
   const [humidityStatData, setHumidityStatData] = useState(0);
   const [temperatureData, setTemperatureData] = useState([0,0,0,0,0,0,0,0,0,0]);
@@ -133,6 +133,26 @@ useEffect(() => {
   //       },
   //   },
   // };
+   const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+    },
+    scales: {
+      y:
+        {
+          min: 40,
+          // max: 15,
+          stepSize: 2,
+        },
+      x:
+        {
+          // type:'time'
+        },
+    },
+  }
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("phantom_user"))
@@ -179,26 +199,26 @@ setTime(res.data.date.split(" ").slice(0,5).join(" "))
         backgroundColor: 'rgba(53, 162, 235, 0.5)',
       }
     ]
-    setOptions({
-      responsive: true,
-      plugins: {
-        legend: {
-          position: 'top',
-        },
-      },
-      scales: {
-        y:
-          {
-            min: 40,
-            // max: 15,
-            stepSize: 2,
-          },
-        x:
-          {
-            // type:'time'
-          },
-      },
-    })
+    // setOptions({
+    //   responsive: true,
+    //   plugins: {
+    //     legend: {
+    //       position: 'top',
+    //     },
+    //   },
+    //   scales: {
+    //     y:
+    //       {
+    //         min: 40,
+    //         // max: 15,
+    //         stepSize: 2,
+    //       },
+    //     x:
+    //       {
+    //         // type:'time'
+    //       },
+    //   },
+    // })
     const temperatureDataset =    [
       {
         label:"Temperature",
