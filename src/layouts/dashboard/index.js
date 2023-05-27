@@ -142,11 +142,11 @@ useEffect(() => {
     },
     scales: {
       y:
-        {
-          min: 40,
-          // max: 15,
-          stepSize: 2,
-        },
+      {
+        min: 0,
+        // max: 15,
+        stepSize: 10,
+      },
       x:
         {
           // type:'time'
