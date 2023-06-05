@@ -55,7 +55,9 @@ function Dashboard() {
   const [tempData, setTempData] = useState(0);
   const [errorMessage,setShowErrorMessage] = useState(false)
  
-const [time,setTime] = useState(null)
+const [phtime,setPhTime] = useState(null)
+const [tempTime,setTempTime] = useState(null)
+const [humidTime,setHumidTime] = useState(null)
   const humidityHandler = () => {
     Axios.get(`splTransfers?account=9iYqFPocWJhALeJ1bKPrF7k8La1UtV88XvP8aZTSho7y`)
       .then(response => {
@@ -153,8 +155,29 @@ useEffect(() => {
         },
     },
   }
+   const phOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+    },
+    scales: {
+      y:
+      {
+        min: 0,
+        max: 14,
+        stepSize: 2,
+      },
+      x:
+        {
+          // type:'time'
+        },
+    },
+  }
 
   useEffect(() => {
+    newCall()
     const user = JSON.parse(localStorage.getItem("phantom_user"))
     console.log({user})
     axios
@@ -183,46 +206,61 @@ useEffect(() => {
       console.log("The error", err)
       });
   }, []);
-const updateAllState = (res) =>{
-  setHumidityStatData(res.data.humidity)
-  setTempData(res.data.temperature)
-  setStatPHData(res.data.phVal);
+  const newCall = async (address) => {
+    console.log({address})
+    try {
+      let data
+    const response = await Axios.get(`splTransfers?account=${address}&toTime=10&limit=10&offset=1`,{
+      headers:{
+        token:process.env.REACT_APP_PUBLIC_SOLANA
+      }
+    })
+    const res = response.data.data
+      console.log({res})
+      return res
+    }catch(e){
+      console.log(e)
+    }
+    
+  }
+const updateAllState = async (res) =>{
+ 
   setTempToken(res.data.tempToken)
   setHumidityToken(res.data.humidityToken)
   setPHToken(res.data.phToken)
-setTime(res.data.date.split(" ").slice(0,5).join(" "))
+
+const dataRes = await newCall(res.data.walletAddress)
+console.log({dataRes},res.data.humidityToken)
+const humid = dataRes.filter((item)=>item.address === res.data.humidityToken).map((d)=>{return {
+  amt:d.changeAmount/10000,time:d.blockTime}})
+const temp = dataRes.filter((item)=>item.address === res.data.tempToken).map((d)=>{return {
+  amt:d.changeAmount/10000,time:d.blockTime}})
+const ph = dataRes.filter((item)=>item.address === res.data.phToken).map((d)=>{return {
+  amt:d.changeAmount/10000,time:d.blockTime}})
+setHumidityStatData(humid[0].amt)
+setTempData(temp[0].amt)
+setStatPHData(ph[0].amt);
+console.log({humid,ph,temp})
+// const newTime = 
+setHumidTime(`${new Date(humid[0].time*1000)}`.split(" ").slice(0,5).join(" "))
+setTempTime(`${new Date(temp[0].time*1000)}`.split(" ").slice(0,5).join(" "))
+setPhTime(`${new Date(ph[0].time*1000)}`.split(" ").slice(0,5).join(" "))
+// console.log({newTime,humid})
     const humidityDataset =    [
       {
         label:"Humidity",
-        data:new Array(10).fill(Math.round(res.data.humidity)),
+         data:new Array(10).fill(Math.round(humid[0].amt)),
+        // data:humid,
                  borderColor: 'rgb(53, 162, 235)',
         backgroundColor: 'rgba(53, 162, 235, 0.5)',
       }
     ]
-    // setOptions({
-    //   responsive: true,
-    //   plugins: {
-    //     legend: {
-    //       position: 'top',
-    //     },
-    //   },
-    //   scales: {
-    //     y:
-    //       {
-    //         min: 40,
-    //         // max: 15,
-    //         stepSize: 2,
-    //       },
-    //     x:
-    //       {
-    //         // type:'time'
-    //       },
-    //   },
-    // })
+ 
     const temperatureDataset =    [
       {
         label:"Temperature",
-        data:new Array(10).fill(Math.round(res.data.temperature)),
+        data:new Array(10).fill(Math.round(temp[0].amt)),
+        // data:temp,
                     borderColor: 'rgb(255, 99, 132)',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
       }
@@ -230,7 +268,8 @@ setTime(res.data.date.split(" ").slice(0,5).join(" "))
     const phDataset =    [
       {
         label:"phValue",
-        data:new Array(10).fill(Math.round(Math.round(res.data.phVal))),
+        data:new Array(10).fill(Math.round(ph[0].amt)),
+        // data:ph,
                     borderColor: 'rgb(25, 99, 232)',
         backgroundColor: 'rgba(55, 99, 32, 0.5)',
       }
@@ -332,7 +371,7 @@ setTime(res.data.date.split(" ").slice(0,5).join(" "))
                       <Line data={humidityData} />
                       <span class="humidity-tooltiptext">{`https://public-api.solscan.io/account/splTransfers?account=${humidityToken}`}</span>
                     </div>
-                    <p>{time}</p>
+                    <p>{humidTime}</p>
                   </MDBox>
                 </Grid>
               </Grid>
@@ -347,7 +386,7 @@ setTime(res.data.date.split(" ").slice(0,5).join(" "))
                       <Line data={temperatureData} options={options}  />
                       <span class="temp-tooltiptext">{`https://public-api.solscan.io/account/splTransfers?account=${tempToken}`}</span>
                     </div>
-                    <p>{time}</p>
+                    <p>{tempTime}</p>
                   </MDBox>
                 </Grid>
               </Grid>
@@ -359,10 +398,10 @@ setTime(res.data.date.split(" ").slice(0,5).join(" "))
                 <Grid item xs={12} md={12} lg={12}>
                   <MDBox mb={3}>
                     <div className="tooltip">
-                      <Line data={phData} options={options}  />
+                      <Line data={phData} options={phOptions}  />
                       <span class="tooltiptext">{`https://public-api.solscan.io/account/splTransfers?account=${PHToken}`}</span>
                     </div>
-                    <p>{time}</p>
+                    <p>{phtime}</p>
                   </MDBox>
                 </Grid>
               </Grid>
