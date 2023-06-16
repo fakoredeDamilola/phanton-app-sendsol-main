@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
-import RewardModal from '../components/RewardModal'
-import './style.css'
+import RewardModal from "../components/RewardModal";
+import "./style.css";
 
 // react-router components
 import { Redirect, Route, Switch, useNavigate, useLocation } from "react-router-dom";
@@ -12,8 +12,8 @@ const Phantom = () => {
   const [provider, setProvider] = useState();
   const [walletKey, setWalletKey] = useState();
   const [show, setShow] = useState(false);
-  const [showModal, setShowModal] = useState(false)
-  const [reward, setReward] = useState('Start Stake')
+  const [showModal, setShowModal] = useState(false);
+  const [reward, setReward] = useState("Start Stake");
 
   const getProvider = () => {
     if ("solana" in window) {
@@ -40,13 +40,12 @@ const Phantom = () => {
         const response = await solana.connect();
         console.log("wallet account ", response.publicKey.toString());
         setWalletKey(response.publicKey.toString());
-            axios
-              .put("https://phantom-api.herokuapp.com/api/users", {
-                email: user.email,
-                key: response.publicKey.toString()
-              })
-              .then((res) => {
-              });
+        axios
+          .put("http://localhost:5000/api/users", {
+            email: user.email,
+            key: response.publicKey.toString(),
+          })
+          .then((res) => {});
       } catch (err) {
         // { code: 4001, message: 'User rejected the request.' }
       }
@@ -64,90 +63,112 @@ const Phantom = () => {
   };
 
   const chooseReward = () => {
-    setShowModal(true)
+    setShowModal(true);
   };
 
   return (
     <div>
       <button
-        style={ {
+        style={{
           fontSize: "16px",
           padding: "15px",
           fontWeight: "bold",
           borderRadius: "5px",
-        } }
-        onClick={ () => history("/send") }
+        }}
+        onClick={() => history("/send")}
       >
         Send
       </button>
-      { provider && !walletKey && (
+      {provider && !walletKey && (
         <button
-          style={ {
+          style={{
             fontSize: "16px",
             padding: "15px",
             fontWeight: "bold",
             borderRadius: "5px",
-            margin: "auto 10px"
-          } }
-          onClick={ connectWallet }
+            margin: "auto 10px",
+          }}
+          onClick={connectWallet}
         >
           Connect to Phantom Wallet
         </button>
-      ) }
+      )}
 
-      { provider && walletKey && (
-        <div style={ { display: "flex", alignItems: "center" } }>
+      {provider && walletKey && (
+        <div style={{ display: "flex", alignItems: "center" }}>
           <button
-            style={ {
+            style={{
               fontSize: "16px",
               padding: "15px",
               fontWeight: "bold",
               borderRadius: "5px",
               margin: "15px auto",
-              marginInline: "10px"
-            } }
-            onClick={ chooseReward }
+              marginInline: "10px",
+            }}
+            onClick={chooseReward}
           >
-            { reward }
+            {reward}
           </button>
-          <RewardModal show={ showModal } onClose={ () => { setShowModal(false) } }>
+          <RewardModal
+            show={showModal}
+            onClose={() => {
+              setShowModal(false);
+            }}
+          >
             <div className="modal-buttons">
-              <button onClick={ () => { setReward('NFT STAKE'); setShowModal(false) } }>NFT Stake</button>
-              <button onClick={ () => { setReward('MONITOR STAKE'); setShowModal(false) } }>MONITOR Stake</button>
+              <button
+                onClick={() => {
+                  setReward("NFT STAKE");
+                  setShowModal(false);
+                }}
+              >
+                NFT Stake
+              </button>
+              <button
+                onClick={() => {
+                  setReward("MONITOR STAKE");
+                  setShowModal(false);
+                }}
+              >
+                MONITOR Stake
+              </button>
             </div>
           </RewardModal>
           <button
-            style={ {
+            style={{
               fontSize: "16px",
               padding: "15px",
               fontWeight: "bold",
               borderRadius: "5px",
               margin: "15px auto",
-            } }
-            onClick={ disconnectWallet }
+            }}
+            onClick={disconnectWallet}
           >
             Disconnect
           </button>
-          <p onClick={ () => setShow(!show) } style={ { fontSize: "12px", cursor: 'pointer' } }>
-            <span style={ { fontWeight: "500", marginRight: "1rem" } }>{ show ? "Hide wallet key " : "Show wallet key" }</span> <span>{ show && walletKey }</span>
+          <p onClick={() => setShow(!show)} style={{ fontSize: "12px", cursor: "pointer" }}>
+            <span style={{ fontWeight: "500", marginRight: "1rem" }}>
+              {show ? "Hide wallet key " : "Show wallet key"}
+            </span>{" "}
+            <span>{show && walletKey}</span>
           </p>
         </div>
-      ) }
+      )}
 
-      { !provider && (
+      {!provider && (
         <p>
           No provider found. Install <a href="https://phantom.app/">Phantom Browser extension</a>
         </p>
-      ) }
+      )}
       <button
-        style={ {
+        style={{
           fontSize: "16px",
           padding: "15px",
           fontWeight: "bold",
           borderRadius: "5px",
-          marginRight: "15px "
-        } }
-        onClick={ () => history("/mint") }
+          marginRight: "15px ",
+        }}
+        onClick={() => history("/mint")}
       >
         Mint
       </button>
