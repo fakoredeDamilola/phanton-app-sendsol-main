@@ -16,6 +16,7 @@ import StakingCard from "./components/StakingCard";
 import axios from "axios";
 import { io } from "socket.io-client";
 import { Link } from "react-router-dom";
+import moment from "moment/moment";
 
 function Dashboard() {
   // const socket = io.connect("http://localhost:5000");
@@ -44,6 +45,7 @@ function Dashboard() {
   // })
   const [humidityData, setHumidityData] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
   const [humidityStatData, setHumidityStatData] = useState(0);
+  const [temperatureStatData, setTemperatureStatData] = useState(0);
   const [temperatureData, setTemperatureData] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
   const [phData, setPHData] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
   const [phStatData, setStatPHData] = useState(0);
@@ -82,8 +84,9 @@ function Dashboard() {
 
   useEffect(() => {
     socket?.on("success", (res) => {
-      alert(123747);
-      updateAllState(res);
+      console.log("calling");
+      callAllNewData();
+      // updateAllState(res);
     });
   }, [socket]);
 
@@ -136,6 +139,10 @@ function Dashboard() {
 
   useEffect(() => {
     newCall();
+    callAllNewData();
+  }, []);
+
+  const callAllNewData = () => {
     const user = JSON.parse(localStorage.getItem("phantom_user"));
     axios
       .get("http://localhost:5000/api/sub/graph", {
@@ -148,6 +155,7 @@ function Dashboard() {
 
         // setData(res.data)
         if (res.data.status) {
+          console.log({ res });
           updateAllState(res);
           setShowErrorMessage(false);
         } else {
@@ -160,7 +168,7 @@ function Dashboard() {
         // alert("Invalid Credentials");
         console.log("The error", err);
       });
-  }, []);
+  };
   const newCall = async (address) => {
     console.log({ address }, "newCall", process.env.REACT_APP_PUBLIC_SOLANA);
     try {
@@ -190,49 +198,33 @@ function Dashboard() {
     setTempToken(res.data.tempToken);
     setHumidityToken(res.data.humidityToken);
     setPHToken(res.data.phToken);
+    const humidVals = res.data.humidValues;
+    const tempVals = res.data.tempValues;
+    const phVals = res.data.phValues;
 
-    const dataRes = await newCall(res.data.walletAddress);
-    console.log({ dataRes });
-    const humid = dataRes
-      .filter((item) => item.address === res.data.humidityToken)
-      .map((d) => {
-        return {
-          amt: d.changeAmount / 10000,
-          time: d.blockTime,
-        };
-      });
-    const temp = dataRes
-      .filter((item) => item.address === res.data.tempToken)
-      .map((d) => {
-        return {
-          amt: d.changeAmount / 10000,
-          time: d.blockTime,
-        };
-      });
-    const ph = dataRes
-      .filter((item) => item.address === res.data.phToken)
-      .map((d) => {
-        return {
-          amt: d.changeAmount / 10000,
-          time: d.blockTime,
-        };
-      });
-    setHumidityStatData(humid[0].amt);
-    setTempData(temp[0].amt);
-    setStatPHData(ph[0].amt);
-    // const newTime =
-    setHumidTime(`${new Date(humid[0].time * 1000)}`.split(" ").slice(0, 5).join(" "));
-    setTempTime(`${new Date(temp[0].time * 1000)}`.split(" ").slice(0, 5).join(" "));
-    setPhTime(`${new Date(ph[0].time * 1000)}`.split(" ").slice(0, 5).join(" "));
-    // console.log(
-    //   new Array(10).fill(humid[0].amt).map((item) => getRandomInt(item, item + 4)),
-    //   "kkwllwl",
-    //   Math.random()
-    // );
+    console.log({ tempVals });
+    const humidArray =
+      humidVals.length > 10 ? humidVals.slice(humidVals.length - 10, humidVals.length) : humidVals;
+    const tempArray =
+      tempVals.length > 10 ? tempVals.slice(tempVals.length - 10, tempVals.length) : tempVals;
+    const phArray = phVals.length > 10 ? phVals.slice(phVals.length - 10, phVals.length) : phVals;
+
+    console.log(tempArray[tempArray.length - 1], "JEJJEJJEJJ");
+    setHumidityStatData(humidArray[humidArray.length - 1]);
+    setStatPHData(phArray[phArray.length - 1]);
+    setTemperatureStatData(tempArray[tempArray.length - 1]);
+
+    const time =
+      res.data.time.length > 10
+        ? res.data.time.slice(res.data.time.length - 10, res.data.time.length)
+        : res.data.time;
+
+    console.log({ humidArray, time });
+
     const humidityDataset = [
       {
         label: "Humidity",
-        data: new Array(10).fill(humid[0].amt).map((item) => getRandomInt(item, item + 1.2)),
+        data: humidArray,
         // data:humid,
         borderColor: "rgb(53, 162, 235)",
         backgroundColor: "rgba(53, 162, 235, 0.5)",
@@ -242,7 +234,7 @@ function Dashboard() {
     const temperatureDataset = [
       {
         label: "Temperature",
-        data: new Array(10).fill(Math.round(temp[0].amt)),
+        data: tempArray,
         // data:temp,
         borderColor: "rgb(255, 99, 132)",
         backgroundColor: "rgba(255, 99, 132, 0.5)",
@@ -251,34 +243,24 @@ function Dashboard() {
     const phDataset = [
       {
         label: "phValue",
-        data: new Array(10).fill(Math.round(ph[0].amt)),
+        data: phArray,
         // data:ph,
         borderColor: "rgb(25, 99, 232)",
         backgroundColor: "rgba(55, 99, 32, 0.5)",
       },
     ];
-
+    const newTime = time.map((t) => {
+      const duration = moment(parseInt(t));
+      const formattedTime = duration.format("hh:mm");
+      return formattedTime;
+    });
     setHumidityData({
-      labels: new Array(10).fill(
-        `${new Date(humid[0].time * 1000)}`.split(" ").slice(4, 5).join(" ")
-      ),
+      labels: newTime,
       datasets: humidityDataset,
     });
-    setTemperatureData({ labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], datasets: temperatureDataset });
-    setPHData({ labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], datasets: phDataset });
+    setTemperatureData({ labels: newTime, datasets: temperatureDataset });
+    setPHData({ labels: newTime, datasets: phDataset });
   };
-
-  // useEffect(() => {
-  //   const myInterval = setInterval(function () {
-  //     humidityHandler();
-  //     tempHandler();
-  //     phHandler();
-  //   }, 60000);
-
-  //   return () => {
-  //     clearInterval(myInterval);
-  //   }
-  // }, []);
 
   return (
     <DashboardLayout>
@@ -307,7 +289,7 @@ function Dashboard() {
               <ComplexStatisticsCard
                 icon="device_thermostat"
                 title="Last Temperature"
-                count={tempData + " Celsius"}
+                count={temperatureStatData + " Celsius"}
                 // percentage={{
                 //   color: "success",
                 //   amount: "+3%",

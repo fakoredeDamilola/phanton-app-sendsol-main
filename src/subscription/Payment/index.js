@@ -33,10 +33,27 @@ function Index({ price, sub, color }) {
   const [showErrorMessage, setShowErrorMessage] = useState("");
   const [available, setAvailable] = useState(false);
   useEffect(() => {
-    let macAddress = JSON.parse(localStorage.getItem("IPData"));
-    if (macAddress?.data[0]?.IP) {
-      setUserIP(macAddress.data[0].IP);
-    }
+    const user = JSON.parse(localStorage.getItem("phantom_user"));
+    console.log({ user });
+    axios
+      .get("http://localhost:5000/api/sub/getmac", {
+        headers: {
+          authorization: `Bearer ${user.token}`,
+        },
+      })
+      .then((res) => {
+        if (res.data.status) {
+          if (res.data.data.MacAddress) {
+            setUserIP(res.data.data.MacAddress);
+          }
+        } else {
+          setShowErrorMessage(`${userIP} not found`);
+        }
+      })
+      .catch((err) => {
+        // alert("Invalid Credentials");
+        console.log("The error", err);
+      });
   }, []);
   const [alertDetails, setAlertDetails] = useState({ show: false, message: "", color: "black" });
   const subString =
@@ -78,7 +95,36 @@ function Index({ price, sub, color }) {
   };
   const checkInfo = async () => {
     if (userIP) {
-      setShowItem(true);
+      // setShowItem(true);
+      const user = JSON.parse(localStorage.getItem("phantom_user"));
+      console.log({ user });
+      const data = {
+        name: `${subString} subscription`,
+        subRatePerMin: price,
+        hasActiveSub: true,
+        email: user.email,
+        durationInMinutes: `${24 * 60 * 60}`,
+        MacAddress: userIP,
+      };
+
+      console.log({ user, data });
+      try {
+        axios
+          .post("http://localhost:5000/api/sub", data, {
+            headers: {
+              authorization: `Bearer ${user.token}`,
+            },
+          })
+          .then((res) => {
+            console.log({ res });
+          })
+          .catch((err) => {
+            console.log("The error", err);
+          });
+        alert("subscription successfully, you are good to go");
+      } catch (e) {
+        alert("an error occurred");
+      }
     } else {
       alert("no mac address,add the address in the data page");
     }

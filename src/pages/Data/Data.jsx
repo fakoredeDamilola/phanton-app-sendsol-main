@@ -15,6 +15,7 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import MDBox from "components/MDBox";
 import MDInput from "components/MDInput";
+import RewardModal from "../../components/RewardModal";
 import axios from "axios";
 import DataTableHeadCell from "examples/Tables/DataTable/DataTableHeadCell";
 import { ClipLoader } from "react-spinners";
@@ -44,7 +45,10 @@ const styles = {
   sendButtonActive: {
     backgroundColor: "#14679b",
     color: "#fff !important",
-    width: "130px",
+    width: "160px",
+    "&:hover": {
+      backgroundColor: "#10212c",
+    },
   },
   table: {
     // minWidth: 650,
@@ -72,21 +76,16 @@ const Data = () => {
   const [userIP, setUserIP] = useState("");
   const [errorMessage, setShowErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showAddExtra, setShowAddExtra] = useState(false);
   const [data, setData] = useState([]);
+  const [openModal, setOpenModal] = useState(false);
+  const [modalInput, setModalInput] = useState({
+    ph1: "",
+    ph2: "",
+    water: "",
+  });
 
   useEffect(() => {
-    // setLoading(true);
-    // signInWithEmailAndPassword(auth, user.email, user.password)
-    //  const IPData = JSON.parse(localStorage.getItem("IPData"))
-
-    //  console.log({IPData})
-    //  if(IPData !== null){
-    //   alert("1")
-    //   setData(IPData.data)
-    //  }else {
-    //   alert("2")
-    //  localStorage.setItem("IPData",null)
-    //  }
     const user = JSON.parse(localStorage.getItem("phantom_user"));
     console.log({ user });
     axios
@@ -96,29 +95,27 @@ const Data = () => {
         },
       })
       .then((res) => {
-        // setLoading(false);
-        // setData(res.data)
         if (res.data.status) {
-          // setData(prevData=>prevData[userIP] = res.data.status)
-          console.log(res.data.data, "keke");
+          console.log(res.data, "keke");
           if (res.data.data.MacAddress) {
             const newObject = {
               id: res.data.data._id,
               IP: res.data.data.MacAddress,
               active: true,
             };
-            console.log({ newObject });
             setData([newObject]);
+
+            if (res.data.extra.ecsensor) {
+              setShowAddExtra(true);
+              setModalInput({
+                ph1: res.data.extra.ph1,
+                ph2: res.data.extra.ph2,
+                water: res.data.extra.water,
+              });
+            } else {
+              setShowAddExtra(false);
+            }
           }
-          // let result = res.data.reading
-
-          //   setData(prevData=>[newObject])
-          //   const IPData  =JSON.parse(localStorage.getItem("IPData"))
-          //   console.log({IPData})
-
-          // setUserIP("")
-
-          // setLoading(false)
         } else {
           setShowErrorMessage(`${userIP} not found`);
           setLoading(false);
@@ -131,6 +128,14 @@ const Data = () => {
       })
       .finally(() => setLoading(false));
   }, []);
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setModalInput((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
 
   const checkSub = () => {
     const user = JSON.parse(localStorage.getItem("phantom_user"));
@@ -189,6 +194,36 @@ const Data = () => {
         .finally(() => setLoading(false));
     } else {
       setShowErrorMessage("Please input a value");
+    }
+  };
+  const submitRecentData = async () => {
+    console.log({ modalInput, data });
+    const user = JSON.parse(localStorage.getItem("phantom_user"));
+    console.log({ user, data });
+    if (data[0].IP !== "") {
+      setLoading(true);
+      const IPNeeded = data[0].IP;
+      const dataSent = {
+        [IPNeeded]: {
+          water: parseFloat(modalInput.water) ?? 0,
+          ph1: parseFloat(modalInput.ph1) ?? 0,
+          ph2: parseFloat(modalInput.ph2) ?? 0,
+        },
+      };
+      console.log({ dataSent });
+      const url =
+        "https://webhooks.mongodb-realm.com/api/client/v2.0/app/application-0-fppkf/service/rootlabs/incoming_webhook/webhook0?secret=12345";
+
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dataSent),
+      });
+      console.log({ response });
+      const text = await response.text();
+      console.log(text);
     }
   };
 
@@ -255,12 +290,79 @@ const Data = () => {
                 <TableRow key={row.id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
                   <TableCell>{row.IP}</TableCell>
                   <TableCell>{row.active ? "connected" : "not connected"}</TableCell>
+                  <TableCell>
+                    {showAddExtra && (
+                      <Button
+                        onClick={() => {
+                          setOpenModal(true);
+                        }}
+                        sx={[styles.sendButtonActive]}
+                        variant="gradient"
+                        color="info"
+                      >
+                        Add Extra Data
+                      </Button>
+                    )}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </TableContainer>
       )}
+      <RewardModal
+        show={openModal}
+        onClose={() => {
+          setOpenModal(false);
+        }}
+      >
+        <MDBox mx={3}>
+          <MDBox>
+            <div htmlFor="ph1">ph1</div>
+            <MDInput
+              fullWidth
+              type="number"
+              name="ph1"
+              value={modalInput.ph1}
+              onChange={handleInputChange}
+            />
+          </MDBox>
+          <MDBox my={2}>
+            <div htmlFor="ph2">ph2</div>
+            <MDInput
+              fullWidth
+              type="number"
+              name="ph2"
+              value={modalInput.ph2}
+              onChange={handleInputChange}
+            />
+          </MDBox>
+          <MDBox>
+            <div htmlFor="water">water</div>
+            <MDInput
+              fullWidth
+              type="number"
+              name="water"
+              value={modalInput.water}
+              onChange={handleInputChange}
+            />
+          </MDBox>
+        </MDBox>
+
+        <div className="modal-buttons">
+          <Button
+            sx={[styles.sendButtonActive]}
+            variant="gradient"
+            color="info"
+            onClick={() => {
+              submitRecentData();
+              setOpenModal(false);
+            }}
+          >
+            Submit Info
+          </Button>
+        </div>
+      </RewardModal>
     </DashboardLayout>
   );
 };

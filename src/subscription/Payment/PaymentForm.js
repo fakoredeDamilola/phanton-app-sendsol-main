@@ -53,12 +53,7 @@ export default function PaymentForm({ price, macAddress, description, handlers }
     if (!error) {
       const { id } = paymentMethod;
       let value = await pay(price, id, description);
-      const data = {
-        name: description,
-        subRatePerMin: price,
-        hasActiveSub: true,
-        email: "youremail@you.com",
-      };
+
       if (value.status === "succeeded") {
         // axios
         //   .post("http://localhost:5000/api/users/sub",data)
