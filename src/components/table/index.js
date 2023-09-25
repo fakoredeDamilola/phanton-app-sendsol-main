@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  useTable,
-  useSortBy,
-  useGlobalFilter,
-  useFilters,
-  usePagination,
-} from "react-table";
+import { useTable, useSortBy, useGlobalFilter, useFilters, usePagination } from "react-table";
 import styled from "styled-components";
 import { columns } from "./data";
 import rebecca from "./rebecca.svg";
@@ -13,7 +7,7 @@ import Search from "./Search";
 import Nothing from "./Nothing";
 // import { ModalContext } from "../../../App";
 import { Filter } from "./Filter";
-import data from "./dummy.json"
+import data from "./dummy.json";
 import axios from "axios";
 
 export const SearchContainer = styled.div`
@@ -22,7 +16,7 @@ export const SearchContainer = styled.div`
   justify-content: space-between;
   margin: auto;
   margin-bottom: 1rem;
-width: 100%;
+  width: 100%;
 
   .title {
     font-size: 2.4rem;
@@ -38,10 +32,10 @@ width: 100%;
 const Pagination = styled.div`
   display: flex;
   width: 100%;
-    margin: auto;
-    margin-top: 0.5rem;
-    padding: 0.5rem 1.6rem;
-    background-color: white;
+  margin: auto;
+  margin-top: 0.5rem;
+  padding: 0.5rem 1.6rem;
+  background-color: white;
   button {
     background-color: transparent;
     border: none;
@@ -90,8 +84,7 @@ const Wrapper = styled.div`
     border-bottom: 1px solid var(--background);
     display: grid;
 
-    grid-template-columns:
-      16px 1fr 100px 120px 1fr;
+    grid-template-columns: 16px 1fr 100px 120px 1fr;
     grid-gap: 19.17px;
     align-items: center;
     & > :nth-child(2) {
@@ -131,7 +124,7 @@ const Wrapper = styled.div`
 `;
 
 const UserTable = () => {
-  const [data, setData] = useState([])
+  const [data, setData] = useState([]);
   // const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -139,21 +132,18 @@ const UserTable = () => {
     // signInWithEmailAndPassword(auth, user.email, user.password)
 
     axios
-      .get("https://phantom-api.herokuapp.com/api/users/sub")
+      .get("https://solanarootlab-94e7d0d3206e.herokuapp.com/api/users/sub")
       .then((res) => {
         // setLoading(false);
         // console.log(res)
-        setData(res.data)
+        setData(res.data);
       })
       .catch((err) => {
         // setLoading(false);
         // alert("Invalid Credentials");
-        console.log("The error", err)
+        console.log("The error", err);
       });
-  }, [])
-
-
-
+  }, []);
 
   const [user, setUser] = React.useState();
   const [colFilterPosition, setColFilterPosition] = React.useState({
@@ -164,22 +154,20 @@ const UserTable = () => {
   // const { setIsOn } = React.useContext(ModalContext);
 
   const flattenPlan = (arr) => {
-    console.log(arr)
+    console.log(arr);
     return arr.map((el) => {
       const plan = el.original.plan.name;
       const newValues = {
         ...el.values,
         created_at: new Date(el.values.created_at).toDateString(),
-        plan: plan
-      }
+        plan: plan,
+      };
       return {
         ...el,
-        values: newValues
-      }
-    }
-    )
-  }
-
+        values: newValues,
+      };
+    });
+  };
 
   const {
     getTableProps,
@@ -194,28 +182,18 @@ const UserTable = () => {
     canPreviousPage,
     state,
     setGlobalFilter,
-  } = useTable(
-    { columns, data },
-    useFilters,
-    useGlobalFilter,
-    useSortBy,
-    usePagination
-  );
-
+  } = useTable({ columns, data }, useFilters, useGlobalFilter, useSortBy, usePagination);
 
   const { globalFilter, pageIndex } = state;
 
   return (
-    <div style={ { position: "relative" } }>
+    <div style={{ position: "relative" }}>
       <SearchContainer>
-
         <p className="title">
-          History <span className="count">({ rows.length })</span>
+          History <span className="count">({rows.length})</span>
         </p>
 
-
-        <Search filter={ globalFilter } setFilter={ setGlobalFilter } />
-
+        <Search filter={globalFilter} setFilter={setGlobalFilter} />
       </SearchContainer>
       {/* {
         <Modal>
@@ -223,164 +201,109 @@ const UserTable = () => {
         </Modal>
       } */}
 
-      { rows.length > 0 && (
+      {rows.length > 0 && (
         <Wrapper>
           <div className="table-fit">
             <table
             // { ...getTableProps() }
             >
               <thead>
-                { headerGroups.map((headerGroup) => (
-                  <tr className="hd" { ...headerGroup.getHeaderGroupProps() }>
-                    <th
-
-                    >
+                {headerGroups.map((headerGroup) => (
+                  <tr className="hd" {...headerGroup.getHeaderGroupProps()}>
+                    <th>
                       <input type="checkbox" />
                     </th>
-                    { headerGroup.headers.map((column, index) => (
-                      <th
-                        { ...column.getHeaderProps(column.getSortByToggleProps()) }
-                        key={ index }
-                      >
-                        { column.render("Header") }
+                    {headerGroup.headers.map((column, index) => (
+                      <th {...column.getHeaderProps(column.getSortByToggleProps())} key={index}>
+                        {column.render("Header")}
                         <span className="colSort">
-                          { column.isSorted ? (
-                            column.isSortedDesc ? (
-                              <DownIcon />
-                            ) : (
-                              <UpIcon />
-                            )
-                          ) : (
-                            ""
-                          ) }
+                          {column.isSorted ? column.isSortedDesc ? <DownIcon /> : <UpIcon /> : ""}
                         </span>
                       </th>
-                    )) }
+                    ))}
                   </tr>
-                )) }
+                ))}
               </thead>
-              <tbody { ...getTableBodyProps() }>
-                { /*flattenPlan(page)*/page.map((row) => {
-                  prepareRow(row);
-                  return (
-                    <tr
-                      { ...row.getRowProps() }
-                      onClick={ () => {
-                        // setIsOn(true);
-                        setUser(row?.original);
-                      } }
-                    >
-                      <td>
-                        <input type="checkbox" />
-                      </td>
-                      { row.cells.map((cell, index) => {
-                        return index === 0 ? (
-                          <td
-                            style={ {
-                              display: "flex",
-                              alignItems: "center",
-                              height: "72px",
-                            } }
-                            { ...cell.getCellProps() }
-                            key={ index }
-                          >
-                            { " " }
-                            <img
-                              style={ { marginRight: "12px" } }
-                              src={ rebecca }
-                              alt="avatar"
-                            />
-                            { cell.render("Cell") }
-                          </td>
-                        ) : (
-                          <td { ...cell.getCellProps() } key={ index }>
-                            { cell.render("Cell") }
-                          </td>
-                        );
-                      }) }
-                    </tr>
-                  );
-                }) }
+              <tbody {...getTableBodyProps()}>
+                {
+                  /*flattenPlan(page)*/ page.map((row) => {
+                    prepareRow(row);
+                    return (
+                      <tr
+                        {...row.getRowProps()}
+                        onClick={() => {
+                          // setIsOn(true);
+                          setUser(row?.original);
+                        }}
+                      >
+                        <td>
+                          <input type="checkbox" />
+                        </td>
+                        {row.cells.map((cell, index) => {
+                          return index === 0 ? (
+                            <td
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                height: "72px",
+                              }}
+                              {...cell.getCellProps()}
+                              key={index}
+                            >
+                              {" "}
+                              <img style={{ marginRight: "12px" }} src={rebecca} alt="avatar" />
+                              {cell.render("Cell")}
+                            </td>
+                          ) : (
+                            <td {...cell.getCellProps()} key={index}>
+                              {cell.render("Cell")}
+                            </td>
+                          );
+                        })}
+                      </tr>
+                    );
+                  })
+                }
               </tbody>
             </table>
           </div>
         </Wrapper>
-      ) }
+      )}
 
-
-      { rows.length > 10 && (
+      {rows.length > 10 && (
         <Pagination>
           <p className="details">
             <span>
-              { 1 + pageIndex * 10 } - { 10 + pageIndex * 10 }
-            </span>{ " " }
-            of { rows.length }
+              {1 + pageIndex * 10} - {10 + pageIndex * 10}
+            </span>{" "}
+            of {rows.length}
           </p>
-          <button
-            disabled={ !canPreviousPage }
-            onClick={ previousPage }
-            className="first"
-          >
+          <button disabled={!canPreviousPage} onClick={previousPage} className="first">
             <PreviousIcon />
           </button>
-          <button disabled={ !canNextPage } onClick={ nextPage }>
+          <button disabled={!canNextPage} onClick={nextPage}>
             <NextIcon />
           </button>
         </Pagination>
-      ) }
-      { rows.length === 0 && <Nothing /> }
+      )}
+      {rows.length === 0 && <Nothing />}
     </div>
   );
 };
 
 export default UserTable;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 function PreviousIcon() {
   return (
-    <svg
-      width="9"
-      height="16"
-      viewBox="0 0 9 16"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M8 15L1 8L8 1"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+    <svg width="9" height="16" viewBox="0 0 9 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M8 15L1 8L8 1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
 
 function UpIcon() {
   return (
-    <svg
-      width="12"
-      height="12"
-      viewBox="0 0 20 20"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg width="12" height="12" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M15 12.5L10 7.5L5 12.5"
         strokeWidth="2"
@@ -391,23 +314,9 @@ function UpIcon() {
   );
 }
 
-
-
-
-
-
-
-
-
 function DownIcon() {
   return (
-    <svg
-      width="12"
-      height="12"
-      viewBox="0 0 20 20"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg width="12" height="12" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
         d="M5 7.5L10 12.5L15 7.5"
         strokeWidth="2"
@@ -420,19 +329,8 @@ function DownIcon() {
 
 function NextIcon() {
   return (
-    <svg
-      width="9"
-      height="16"
-      viewBox="0 0 9 16"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M1 1L8 8L1 15"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+    <svg width="9" height="16" viewBox="0 0 9 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M1 1L8 8L1 15" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }

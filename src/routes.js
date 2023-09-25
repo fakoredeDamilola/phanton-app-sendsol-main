@@ -1,13 +1,12 @@
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
 import Dashboard from "layouts/dashboard";
-import Payment from "./subscription"
+import Payment from "./subscription";
 import { Theme as MintApp } from "components/common/Theme";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
 import History from "pages/History";
-import { SendApp } from "App";
 import { Home } from "pages/Home/Home";
 import Data from "pages/Data/Data";
 
@@ -37,7 +36,7 @@ const routes = [
     route: "/authentication/sign-up",
     component: <SignUp />,
   },
-    {
+  {
     type: "collapse",
     name: "Subscription",
     key: "subscription",
@@ -45,7 +44,7 @@ const routes = [
     route: "/subscription",
     component: <Payment />,
   },
-    {
+  {
     type: "collapse",
     name: "History",
     key: "history",
@@ -53,7 +52,7 @@ const routes = [
     route: "/history",
     component: <History />,
   },
-    {
+  {
     type: "collapse",
     name: "Mint",
     key: "mint",
@@ -61,7 +60,7 @@ const routes = [
     route: "/mint",
     component: <MintApp />,
   },
-    {
+  {
     type: "collapse",
     name: "Send",
     key: "send",
@@ -69,7 +68,7 @@ const routes = [
     route: "/send",
     component: <Home />,
   },
-    {
+  {
     type: "collapse",
     name: "Data",
     key: "data",

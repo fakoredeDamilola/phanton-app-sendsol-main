@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.bcad5aea.css",
-    "main.js": "/static/js/main.b5a3f44d.js",
+    "main.css": "/static/css/main.a36e4aad.css",
+    "main.js": "/static/js/main.10803cc5.js",
     "static/media/bg-sign-in-basic.jpeg": "/static/media/bg-sign-in-basic.f327db1d0e4b00ba3c81.jpeg",
     "static/media/funds.svg": "/static/media/funds.05f56066db4f3f7ac6f20bcc1e9a50a3.svg",
     "static/media/bg-sign-up-cover.jpeg": "/static/media/bg-sign-up-cover.30c5950b22e74f0d82ba.jpeg",
@@ -11,11 +11,11 @@
     "static/media/logo.svg": "/static/media/logo.8da4b5775508a498366157da187eb892.svg",
     "static/media/coin.svg": "/static/media/coin.4ee4477df892cda082647fedffb3f35e.svg",
     "index.html": "/index.html",
-    "main.bcad5aea.css.map": "/static/css/main.bcad5aea.css.map",
-    "main.b5a3f44d.js.map": "/static/js/main.b5a3f44d.js.map"
+    "main.a36e4aad.css.map": "/static/css/main.a36e4aad.css.map",
+    "main.10803cc5.js.map": "/static/js/main.10803cc5.js.map"
   },
   "entrypoints": [
-    "static/css/main.bcad5aea.css",
-    "static/js/main.b5a3f44d.js"
+    "static/css/main.a36e4aad.css",
+    "static/js/main.10803cc5.js"
   ]
 }

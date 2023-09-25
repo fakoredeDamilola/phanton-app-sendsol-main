@@ -1,13 +1,26 @@
 .modal-buttons {
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
 }
 
 .modal-buttons button {
-    font-size: 14px;
-    padding: 7px;
-
+  font-size: 14px;
+  padding: 7px;
+}
+.buttonStyles {
+  font-size: 13px;
+  padding: 7px 10px;
+  border-radius: 5px;
+  margin: 15px auto;
+  margin-inline: 10px;
+  border: 1px solid rgb(39, 171, 248);
+  transition: 0.3s all;
+  cursor: pointer;
+}
+.buttonStyles:hover {
+  background-color: rgb(39, 171, 248);
+  color: white;
 }

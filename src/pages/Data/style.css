@@ -1,0 +1,102 @@
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  background-color: #f0f0f0;
+}
+
+.toggle-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  margin: 10px;
+}
+
+.toggle-input {
+  display: none;
+}
+
+.slider {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 30px;
+  background-color: #ccc;
+  border-radius: 30px;
+  transition: background-color 0.3s;
+}
+
+.slider:before {
+  content: "";
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background-color: white;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.3s;
+}
+
+.toggle-input:checked + .slider {
+  background-color: #4caf50;
+}
+
+.toggle-input:checked + .slider:before {
+  transform: translateX(30px);
+}
+
+.status {
+  margin-left: 10px;
+}
+
+.timer-input {
+  margin-left: 10px;
+  padding: 5px;
+  width: 110px;
+}
+/* Existing CSS styles */
+
+/* Add styles for the larger slide switch */
+.slider {
+  position: relative;
+  display: inline-block;
+  width: 80px; /* Increase the width for larger switches */
+  height: 40px; /* Increase the height for larger switches */
+  background-color: #ccc;
+  border-radius: 40px; /* Increase the border radius for larger switches */
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.slider:before {
+  content: "";
+  position: absolute;
+  width: 36px; /* Increase the width for larger switches */
+  height: 36px; /* Increase the height for larger switches */
+  border-radius: 50%;
+  background-color: white;
+  top: 2px;
+  left: 2px;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+label {
+  font-size: 14px;
+}
+
+.toggle-input:checked + .slider {
+  background-color: #4caf50;
+}
+
+.toggle-input:checked + .slider:before {
+  transform: translateX(40px); /* Adjust the translation for larger switches */
+}

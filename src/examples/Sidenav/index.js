@@ -144,6 +144,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
     <SidenavRoot
       {...rest}
       variant="permanent"
+      style={{ zIndex: 3 }}
       ownerState={{ transparentSidenav, whiteSidenav, miniSidenav, darkMode }}
     >
       <MDBox pt={3} pb={1} px={4} textAlign="center">
