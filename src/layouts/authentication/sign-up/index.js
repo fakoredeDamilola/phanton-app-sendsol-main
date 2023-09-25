@@ -132,7 +132,7 @@ function Cover() {
                 onClick={() => {
                   setLoading(true);
                   axios
-                    .post("http://localhost:5000/api/users", {
+                    .post("https://solanarootlab-94e7d0d3206e.herokuapp.com/api/users", {
                       name: user.name,
                       email: user.email,
                       password: user.password,
@@ -145,6 +145,7 @@ function Cover() {
                       history("/dashboard");
                     })
                     .catch((err) => {
+                      console.log({ err });
                       alert(err);
                       setLoading(false);
                     });

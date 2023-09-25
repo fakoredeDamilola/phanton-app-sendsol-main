@@ -132,7 +132,7 @@ const UserTable = () => {
     // signInWithEmailAndPassword(auth, user.email, user.password)
 
     axios
-      .get("http://localhost:5000/api/users/sub")
+      .get("https://solanarootlab-94e7d0d3206e.herokuapp.com/api/users/sub")
       .then((res) => {
         // setLoading(false);
         // console.log(res)

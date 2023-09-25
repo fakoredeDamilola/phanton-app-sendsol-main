@@ -41,7 +41,7 @@ const Phantom = () => {
         console.log("wallet account ", response.publicKey.toString());
         setWalletKey(response.publicKey.toString());
         axios
-          .put("http://localhost:5000/api/users", {
+          .put("https://solanarootlab-94e7d0d3206e.herokuapp.com/api/users", {
             email: user.email,
             key: response.publicKey.toString(),
           })
@@ -65,48 +65,20 @@ const Phantom = () => {
   const chooseReward = () => {
     setShowModal(true);
   };
-
   return (
     <div>
-      <button
-        style={{
-          fontSize: "16px",
-          padding: "15px",
-          fontWeight: "bold",
-          borderRadius: "5px",
-        }}
-        onClick={() => history("/send")}
-      >
+      <button className="buttonStyles" onClick={() => history("/send")}>
         Send
       </button>
       {provider && !walletKey && (
-        <button
-          style={{
-            fontSize: "16px",
-            padding: "15px",
-            fontWeight: "bold",
-            borderRadius: "5px",
-            margin: "auto 10px",
-          }}
-          onClick={connectWallet}
-        >
+        <button className="buttonStyles" onClick={connectWallet}>
           Connect to Phantom Wallet
         </button>
       )}
 
       {provider && walletKey && (
         <div style={{ display: "flex", alignItems: "center" }}>
-          <button
-            style={{
-              fontSize: "16px",
-              padding: "15px",
-              fontWeight: "bold",
-              borderRadius: "5px",
-              margin: "15px auto",
-              marginInline: "10px",
-            }}
-            onClick={chooseReward}
-          >
+          <button className="buttonStyles" onClick={chooseReward}>
             {reward}
           </button>
           <RewardModal
@@ -134,16 +106,7 @@ const Phantom = () => {
               </button>
             </div>
           </RewardModal>
-          <button
-            style={{
-              fontSize: "16px",
-              padding: "15px",
-              fontWeight: "bold",
-              borderRadius: "5px",
-              margin: "15px auto",
-            }}
-            onClick={disconnectWallet}
-          >
+          <button className="buttonStyles" onClick={disconnectWallet}>
             Disconnect
           </button>
           <p onClick={() => setShow(!show)} style={{ fontSize: "12px", cursor: "pointer" }}>
@@ -160,16 +123,7 @@ const Phantom = () => {
           No provider found. Install <a href="https://phantom.app/">Phantom Browser extension</a>
         </p>
       )}
-      <button
-        style={{
-          fontSize: "16px",
-          padding: "15px",
-          fontWeight: "bold",
-          borderRadius: "5px",
-          marginRight: "15px ",
-        }}
-        onClick={() => history("/mint")}
-      >
+      <button className="buttonStyles" onClick={() => history("/mint")}>
         Mint
       </button>
     </div>

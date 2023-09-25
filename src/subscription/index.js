@@ -47,9 +47,8 @@ function Subscription() {
   const subscribeUser = () => {
     alert("this is a test subscription for every minute");
     const user = JSON.parse(localStorage.getItem("phantom_user"));
-    console.log({ user });
+
     let macAddress = JSON.parse(localStorage.getItem("IPData"));
-    console.log({ macAddress });
 
     const data = {
       name: "1 min sub",
@@ -61,7 +60,7 @@ function Subscription() {
     };
     console.log({ data });
     axios
-      .post("http://localhost:5000/api/sub", data, {
+      .post("https://solanarootlab-94e7d0d3206e.herokuapp.com/api/sub", data, {
         headers: {
           authorization: `Bearer ${user.token}`,
         },

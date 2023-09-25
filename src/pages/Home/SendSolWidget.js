@@ -1,13 +1,5 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from "react";
-import {
-  Box,
-  Button,
-  IconButton,
-  Input,
-  LinearProgress,
-  Link,
-  Typography,
-} from "@mui/material";
+import { Box, Button, IconButton, Input, LinearProgress, Link, Typography } from "@mui/material";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import QueryBuilderIcon from "@mui/icons-material/QueryBuilder";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
@@ -15,15 +7,19 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import CloseIcon from "@mui/icons-material/Close";
 import { WalletNotConnectedError } from "@solana/wallet-adapter-base";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { Keypair, SystemProgram, Transaction, PublicKey, sendAndConfirmTransaction } from "@solana/web3.js";
+import {
+  Keypair,
+  SystemProgram,
+  Transaction,
+  PublicKey,
+  sendAndConfirmTransaction,
+} from "@solana/web3.js";
 import BigNumber from "bignumber.js";
 import SolLogo from "../../assets/coin.svg";
 import { InfoRow } from "../../components/InfoRow";
 import { useGetSolanaPrice } from "../../hooks/useGetSolanaPrice";
-import Moralis from 'moralis';
+import Moralis from "moralis";
 import { SolNetwork, SolAddress } from "@moralisweb3/sol-utils";
-
-
 
 const LAMPORTS_PER_SOL = BigNumber(1000000000);
 const CONFIRMATIONS_FOR_SUCCESS = 21;
@@ -45,16 +41,13 @@ export const SendSolWidget = () => {
   const solInUsd = useGetSolanaPrice();
   const [txn, setTxn] = useState("");
   const [isWaitingForConfirmation, setIsWaitingForConfirmation] = useState(false);
-  const wallet = useWallet()
-  let balan= '0';
-  
+  const wallet = useWallet();
+  let balan = "0";
+
   const getBalance = useCallback(async () => {
     if (publicKey) {
       let balan = await connection.getBalance(publicKey);
       let bals = balan;
-      console.log(bals);
-      console.log(`${balance} SOL`);
-      console.log("balance", bals);
       setBalance(BigNumber(bals));
 
       console.log(publicKey);
@@ -84,22 +77,15 @@ export const SendSolWidget = () => {
 
   const onExplorerClick = () => {
     const win = window;
-    win
-      .open(`https://solscan.io/tx/${txn ?? ""}?cluster=mainnet-beta`, "_blank")
-      ?.focus();
+    win.open(`https://solscan.io/tx/${txn ?? ""}?cluster=mainnet-beta`, "_blank")?.focus();
   };
 
   const confirmerLooop = useCallback(
     async (startBlock) => {
       const interval = setInterval(async () => {
         const recentBlockhash = await connection.getLatestBlockhash();
-        setConfirmations(
-          (recentBlockhash?.lastValidBlockHeight ?? 0) - startBlock
-        );
-        if (
-          (recentBlockhash?.lastValidBlockHeight ?? 0) - startBlock >
-          CONFIRMATIONS_FOR_SUCCESS
-        ) {
+        setConfirmations((recentBlockhash?.lastValidBlockHeight ?? 0) - startBlock);
+        if ((recentBlockhash?.lastValidBlockHeight ?? 0) - startBlock > CONFIRMATIONS_FOR_SUCCESS) {
           clearInterval(interval);
         }
       }, 1000);
@@ -125,9 +111,7 @@ export const SendSolWidget = () => {
             lamports: 9999,
           })
         );
-        const response = await connection.getFeeForMessage(
-          transaction.compileMessage()
-        );
+        const response = await connection.getFeeForMessage(transaction.compileMessage());
         if (response?.value) {
           setFee(response?.value);
         }
@@ -229,10 +213,7 @@ export const SendSolWidget = () => {
                 setIsSending(true);
               }}
               variant={!isSending ? "text" : "contained"}
-              sx={[
-                styles.sendButton,
-                !isSending ? styles.sendButtonDead : styles.sendButtonActive,
-              ]}
+              sx={[styles.sendButton, !isSending ? styles.sendButtonDead : styles.sendButtonActive]}
             >
               Send
             </Button>
@@ -242,21 +223,13 @@ export const SendSolWidget = () => {
                 setIsSending(false);
               }}
               variant={isSending ? "text" : "contained"}
-              sx={[
-                styles.sendButton,
-                isSending ? styles.sendButtonDead : styles.sendButtonActive,
-              ]}
+              sx={[styles.sendButton, isSending ? styles.sendButtonDead : styles.sendButtonActive]}
             >
               Recieve
             </Button>
           </Box>
           <Box mt={3} sx={styles.coinLogo}>
-            <img
-              width="30px"
-              style={{ opacity: "60%" }}
-              src={SolLogo}
-              alt="Solana Logo"
-            />
+            <img width="30px" style={{ opacity: "60%" }} src={SolLogo} alt="Solana Logo" />
             <Typography ml={1.4} color="text.primary" variant="h3">
               SOL
             </Typography>
@@ -281,11 +254,7 @@ export const SendSolWidget = () => {
                 }}
               >
                 <Box mr={2} sx={{ width: "80%" }}>
-                  <Typography
-                    color="text.primary"
-                    variant="h3"
-                    sx={styles.leftLongText}
-                  >
+                  <Typography color="text.primary" variant="h3" sx={styles.leftLongText}>
                     <Link href="#" onClick={onCopyClick}>
                       {publicKey?.toString()}
                     </Link>
@@ -293,10 +262,7 @@ export const SendSolWidget = () => {
                 </Box>
                 <Box sx={{}}>
                   <IconButton onClick={onCopyClick}>
-                    <ContentCopyIcon
-                      color="action"
-                      sx={{ width: "25px", height: "25px" }}
-                    />
+                    <ContentCopyIcon color="action" sx={{ width: "25px", height: "25px" }} />
                   </IconButton>
                 </Box>
               </Box>
@@ -347,33 +313,23 @@ export const SendSolWidget = () => {
             sx={[
               styles.maxContainer,
               {
-                borderColor:
-                  nextPressed && !isValidAmount ? "error.main" : undefined,
+                borderColor: nextPressed && !isValidAmount ? "error.main" : undefined,
               },
             ]}
           >
             <Typography
-              color={
-                nextPressed && !isValidAmount ? "error.main" : "text.primary"
-              }
+              color={nextPressed && !isValidAmount ? "error.main" : "text.primary"}
               mr={1}
               variant="subtitle1"
-
             >
               Current Balance:{" "}
-
-              {(balance !== null ? balance : BigNumber(0))// changed to 0
+              {(balance !== null ? balance : BigNumber(0)) // changed to 0
                 .dividedBy(LAMPORTS_PER_SOL)
                 ?.toString()}{" "}
-
               SOL
             </Typography>
             {!!balance && !!isSending && (
-              <Button
-                onClick={onMaxClick}
-                variant="contained"
-                sx={styles.maxButton}
-              >
+              <Button onClick={onMaxClick} variant="contained" sx={styles.maxButton}>
                 Max
               </Button>
             )}
@@ -389,13 +345,10 @@ export const SendSolWidget = () => {
                     {amount || "0"}
                     {parseFloat(amount) > 0 &&
                       !!solInUsd &&
-                      ` (${(parseFloat(amount) * solInUsd).toLocaleString(
-                        "en-US",
-                        {
-                          style: "currency",
-                          currency: "USD",
-                        }
-                      )})`}
+                      ` (${(parseFloat(amount) * solInUsd).toLocaleString("en-US", {
+                        style: "currency",
+                        currency: "USD",
+                      })})`}
                   </Typography>
                 </Box>
                 <Box sx={styles.coinLogo}>
@@ -466,10 +419,7 @@ export const SendSolWidget = () => {
               {confirmations < CONFIRMATIONS_FOR_SUCCESS ? (
                 <QueryBuilderIcon sx={styles.warningIcon} color="action" />
               ) : (
-                <CheckCircleOutlineIcon
-                  sx={styles.warningIcon}
-                  color="success"
-                />
+                <CheckCircleOutlineIcon sx={styles.warningIcon} color="success" />
               )}
               <Typography color="text.primary" mb={1} mt={4} variant="h3">
                 {confirmations < CONFIRMATIONS_FOR_SUCCESS
@@ -479,11 +429,7 @@ export const SendSolWidget = () => {
               <Box mt={2} sx={styles.progressBox}>
                 <Box sx={styles.linearProg}>
                   <LinearProgress
-                    color={
-                      confirmations < CONFIRMATIONS_FOR_SUCCESS
-                        ? undefined
-                        : "success"
-                    }
+                    color={confirmations < CONFIRMATIONS_FOR_SUCCESS ? undefined : "success"}
                     variant="determinate"
                     value={Math.min(confirmations * 5, 100)}
                   />
@@ -502,11 +448,7 @@ export const SendSolWidget = () => {
               <Typography color="text.primary" mb={1} mt={4} variant="h3">
                 Transaction has failed, please try again
               </Typography>
-              <Typography
-                color="text.primary"
-                sx={styles.centeredLongText}
-                variant="subtitle1"
-              >
+              <Typography color="text.primary" sx={styles.centeredLongText} variant="subtitle1">
                 Failure reason:
                 <br />
                 {error}

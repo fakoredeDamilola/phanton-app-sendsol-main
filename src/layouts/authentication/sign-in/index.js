@@ -122,7 +122,7 @@ function Basic() {
                   setLoading(true);
                   // signInWithEmailAndPassword(auth, user.email, user.password)
                   axios
-                    .post("http://localhost:5000/api/users/login", {
+                    .post("https://solanarootlab-94e7d0d3206e.herokuapp.com/api/users/login", {
                       email: user.email,
                       password: user.password,
                     })

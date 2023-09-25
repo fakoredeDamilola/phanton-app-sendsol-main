@@ -36,7 +36,7 @@ function Index({ price, sub, color }) {
     const user = JSON.parse(localStorage.getItem("phantom_user"));
     console.log({ user });
     axios
-      .get("http://localhost:5000/api/sub/getmac", {
+      .get("https://solanarootlab-94e7d0d3206e.herokuapp.com/api/sub/getmac", {
         headers: {
           authorization: `Bearer ${user.token}`,
         },
@@ -65,7 +65,7 @@ function Index({ price, sub, color }) {
     console.log({ user });
     let avail = false;
     if (userIP) {
-      const data = await axios.get("http://localhost:5000/api/sub", {
+      const data = await axios.get("https://solanarootlab-94e7d0d3206e.herokuapp.com/api/sub", {
         headers: {
           authorization: `Bearer ${user.token}`,
         },
@@ -110,7 +110,7 @@ function Index({ price, sub, color }) {
       console.log({ user, data });
       try {
         axios
-          .post("http://localhost:5000/api/sub", data, {
+          .post("https://solanarootlab-94e7d0d3206e.herokuapp.com/api/sub", data, {
             headers: {
               authorization: `Bearer ${user.token}`,
             },
