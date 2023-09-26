@@ -332,9 +332,8 @@ function Dashboard() {
           // window.localStorage.setItem("transationRide", "1");
           setWelcomeModal((state) => !state);
         }}
-        textHeader={"Welcome to the P2P Platform"}
-        welcomeText="
-   Here, we'll walkthough how to sell/buy your cryptocurrencies or tokens"
+        textHeader={"Welcome to your 3D Root Labs dashboard"}
+        welcomeText="An innovative way to embrace urban sustainability"
       />
       <DashboardLayout sx={{ mt: "40px" }}>
         <DashboardNavbar />
@@ -425,7 +424,7 @@ function Dashboard() {
                         height: "80%",
                         width: "80%",
                       },
-                    }}
+                    }} className="waterGraph"
                   >
                     <AnimatedProgressProvider
                       valueStart={0}
@@ -448,7 +447,7 @@ function Dashboard() {
                 </MDBox>
               )}
               <Grid item xs={9}>
-                <MDBox mt={4.5}>
+                <MDBox mt={4.5} className="humidityGraph">
                   <Grid container spacing={3}>
                     <Grid item xs={12} md={12} lg={12}>
                       <MDBox mb={3}>
@@ -463,7 +462,7 @@ function Dashboard() {
                 </MDBox>
               </Grid>
               <Grid item xs={9}>
-                <MDBox mt={4.5}>
+                <MDBox mt={4.5} className="temperatureGraph">
                   <Grid container spacing={3}>
                     <Grid item xs={12} md={12} lg={12}>
                       <MDBox mb={3}>
@@ -478,7 +477,7 @@ function Dashboard() {
                 </MDBox>
               </Grid>
               <Grid item xs={9}>
-                <MDBox mt={4.5}>
+                <MDBox mt={4.5} className="phGraph">
                   <Grid container spacing={3}>
                     <Grid item xs={12} md={12} lg={12}>
                       <MDBox mb={3}>
@@ -495,7 +494,7 @@ function Dashboard() {
               {ecToken && (
                 <>
                   <Grid item xs={9}>
-                    <MDBox mt={4.5}>
+                    <MDBox mt={4.5} className="ecGraph">
                       <Grid container spacing={3}>
                         <Grid item xs={12} md={12} lg={12}>
                           <MDBox mb={3}>

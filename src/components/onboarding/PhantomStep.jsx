@@ -16,11 +16,10 @@ export const phantomStep = [
 
   {
     target: ".humidity",
-    title: <TitleBox>Order / Trade Timer </TitleBox>,
+    title: <TitleBox>Owned NFT's / Grow Humidity </TitleBox>,
     content: (
       <ContentBox>
-        Trade immediately starts when you get to this screen. There is a time limit of 15mins for
-        you to interact with this interface.
+        See all your gardens and total minted khlros coins for each day your tower is staked. Receive real time updates of your grow room humidity
       </ContentBox>
     ),
     placement: "right",
@@ -34,11 +33,10 @@ export const phantomStep = [
   },
   {
     target: ".temperature",
-    title: <TitleBox>Message Box</TitleBox>,
+    title: <TitleBox>Real Time Temperature</TitleBox>,
     content: (
       <ContentBox>
-        You can message the vendor anytime during the trade. This keeps communication going
-        throughout the trading process.
+      Monitor the grow room temperature and adjust your grow temperatures based on your ideal settings
       </ContentBox>
     ),
     placement: "right",
@@ -53,11 +51,10 @@ export const phantomStep = [
 
   {
     target: ".ph",
-    title: <TitleBox> Order Information</TitleBox>,
+    title: <TitleBox>Real Time PH</TitleBox>,
     content: (
       <ContentBox>
-        Information about your / trade with the vendor are shown here. Details like Amount to pay,
-        Pric and the Amount of tokens you'll recieve.
+        PH is arguably one of the most important variables when it comes to growing hydroponically. You can use the Garden Doctor settings on the data tab to set your PH range and allow the doctor to do the rest.
       </ContentBox>
     ),
     placement: "right",
@@ -72,11 +69,10 @@ export const phantomStep = [
 
   {
     target: ".KHLR",
-    title: <TitleBox> Seller's Account Information</TitleBox>,
+    title: <TitleBox>Minting Khlros</TitleBox>,
     content: (
       <ContentBox>
-        Immediately the seller approves this trade from his end by locking up the token on the
-        system, their account information is shown to you to make payment. .
+       Khlros, or green coin will be the digital currency that connects growers and gardeners all around the world through sustainability. You can your digital NFT garden to mint khrlos daily. Subscription required
       </ContentBox>
     ),
     placement: "right",
@@ -88,10 +84,28 @@ export const phantomStep = [
       skip: <SkipBtn />,
     },
   },
-
-  /*
   {
-    target: ".CoinReleaseDispute",
+    target: ".waterGraph",
+    title: <TitleBox> Notify Seller </TitleBox>,
+    content: (
+      <ContentBox>
+        After you have successfully made payment, click on NOTIFY SELLER so that
+        the system will pass the message across. Before payments are made, you
+        can cancel i you found trade unsuitable.
+      </ContentBox>
+    ),
+    placement: "right",
+    locale: {
+      next: <NextBtn />,
+      back: <BackBtn />,
+      close: <CloseBtn />,
+      last: <DoneBtn />,
+      skip: <SkipBtn />,
+    },
+  },
+  
+  {
+    target: ".humidityGraph",
     title: <TitleBox> Coin Release and Dispute</TitleBox>,
     content: (
       <ContentBox>
@@ -110,28 +124,10 @@ export const phantomStep = [
     },
   },
 
-  {
-    target: ".NotSeller",
-    title: <TitleBox> Notify Seller </TitleBox>,
-    content: (
-      <ContentBox>
-        After you have successfully made payment, click on NOTIFY SELLER so that
-        the system will pass the message across. Before payments are made, you
-        can cancel i you found trade unsuitable.
-      </ContentBox>
-    ),
-    placement: "right",
-    locale: {
-      next: <NextBtn />,
-      back: <BackBtn />,
-      close: <CloseBtn />,
-      last: <DoneBtn />,
-      skip: <SkipBtn />,
-    },
-  },
+ 
 
   {
-    target: ".TrxnCompleted",
+    target: ".temperatureGraph",
     title: <TitleBox> Transaction Complete!</TitleBox>,
     content: (
       <ContentBox>
@@ -147,5 +143,40 @@ export const phantomStep = [
       skip: <SkipBtn />,
     },
   },
-  */
+  {
+    target: ".phGraph",
+    title: <TitleBox> Transaction Complete!</TitleBox>,
+    content: (
+      <ContentBox>
+        If there's no dispute between you and the vendors, the system releases
+        the tokens to your wallet immediately to mark the trade was completed.
+      </ContentBox>
+    ),
+    locale: {
+      next: <NextBtn />,
+      back: <BackBtn />,
+      close: <CloseBtn />,
+      last: <DoneBtn />,
+      skip: <SkipBtn />,
+    },
+  },
+  
+  {
+    target: ".ecGraph",
+    title: <TitleBox> Transaction Complete!</TitleBox>,
+    content: (
+      <ContentBox>
+        If there's no dispute between you and the vendors, the system releases
+        the tokens to your wallet immediately to mark the trade was completed.
+      </ContentBox>
+    ),
+    locale: {
+      next: <NextBtn />,
+      back: <BackBtn />,
+      close: <CloseBtn />,
+      last: <DoneBtn />,
+      skip: <SkipBtn />,
+    },
+  }
+  
 ];
