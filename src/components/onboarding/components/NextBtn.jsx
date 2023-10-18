@@ -1,10 +1,17 @@
 import { Button } from "@mui/material";
 import React from "react";
+import { Link } from "react-router-dom";
 
-const NextBtn = () => {
+const NextBtn = ({ link }) => {
   return (
     <>
-      <Button sx={{ border: "1px solid white", color: "white" }}>Next</Button>
+      {link ? (
+        <Link to={link}>
+          <Button sx={{ border: "1px solid white", color: "white" }}>Next</Button>
+        </Link>
+      ) : (
+        <Button sx={{ border: "1px solid white", color: "white" }}>Next</Button>
+      )}
     </>
   );
 };

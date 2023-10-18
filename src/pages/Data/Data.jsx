@@ -13,6 +13,7 @@ import {
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import MDBox from "components/MDBox";
+import Joyride from "react-joyride";
 import MDInput from "components/MDInput";
 import RewardModal from "../../components/RewardModal";
 import axios from "axios";
@@ -20,6 +21,7 @@ import { ClipLoader } from "react-spinners";
 import { setRefreshPageAfterDataChange } from "context";
 import { useMaterialUIController } from "context";
 import "./style.css";
+import { phantomStep } from "components/onboarding/PhantomStep";
 
 const styles = {
   // [theme.breakpoints.down('md')]: {
@@ -81,6 +83,7 @@ const Data = () => {
   const [showAddExtra, setShowAddExtra] = useState(true);
   const [modalLoading, setModalLoading] = useState(false);
   const [data, setData] = useState([]);
+  const [run, setRun] = useState(true);
   const [openModal, setOpenModal] = useState(false);
   const [modalInput, setModalInput] = useState({
     ph1: "",
@@ -357,6 +360,23 @@ const Data = () => {
   return (
     <DashboardLayout>
       <DashboardNavbar />
+      <Joyride
+        // @ts-ignore
+        steps={phantomStep}
+        run={run}
+        continuous={true}
+        scrollToFirstStep={true}
+        showSkipButton={true}
+        //callback={handleStepComplete}
+        styles={{
+          options: {
+            arrowColor: "#319EF6",
+            backgroundColor: "#319EF6",
+            textColor: "#FFFFFF",
+            primaryColor: "#319EF6",
+          },
+        }}
+      />
       <MDBox
         py={3}
         sx={({ breakpoints }) => ({
@@ -371,6 +391,7 @@ const Data = () => {
         })}
         mx={8}
         mt={4}
+        className="dataInput"
       >
         {/* <Grid container spacing={3}> */}
         {/* <MDBox mb={2} backgroundColor="red"> */}
@@ -415,11 +436,14 @@ const Data = () => {
             <TableBody>
               {data.map((row) => (
                 <TableRow key={row.id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-                  <TableCell>{row.IP}</TableCell>
-                  <TableCell>{row.active ? "connected" : "not connected"}</TableCell>
+                  <TableCell className="showMacAddress">{row.IP}</TableCell>
+                  <TableCell className="statusOfConnection">
+                    {row.active ? "connected" : "not connected"}
+                  </TableCell>
                   <TableCell>
                     {showAddExtra && (
                       <Button
+                        className="addExtraData"
                         onClick={() => {
                           setOpenModal(true);
                         }}

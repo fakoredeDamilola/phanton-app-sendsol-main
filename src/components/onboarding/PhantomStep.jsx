@@ -19,7 +19,8 @@ export const phantomStep = [
     title: <TitleBox>Owned NFT's / Grow Humidity </TitleBox>,
     content: (
       <ContentBox>
-        See all your gardens and total minted khlros coins for each day your tower is staked. Receive real time updates of your grow room humidity
+        See all your gardens and total minted khlros coins for each day your tower is staked.
+        Receive real time updates of your grow room humidity
       </ContentBox>
     ),
     placement: "right",
@@ -36,7 +37,8 @@ export const phantomStep = [
     title: <TitleBox>Real Time Temperature</TitleBox>,
     content: (
       <ContentBox>
-      Monitor the grow room temperature and adjust your grow temperatures based on your ideal settings
+        Monitor the grow room temperature and adjust your grow temperatures based on your ideal
+        settings
       </ContentBox>
     ),
     placement: "right",
@@ -54,7 +56,9 @@ export const phantomStep = [
     title: <TitleBox>Real Time PH</TitleBox>,
     content: (
       <ContentBox>
-        PH is arguably one of the most important variables when it comes to growing hydroponically. You can use the Garden Doctor settings on the data tab to set your PH range and allow the doctor to do the rest.
+        PH is arguably one of the most important variables when it comes to growing hydroponically.
+        You can use the Garden Doctor settings on the data tab to set your PH range and allow the
+        doctor to do the rest.
       </ContentBox>
     ),
     placement: "right",
@@ -72,7 +76,9 @@ export const phantomStep = [
     title: <TitleBox>Minting Khlros</TitleBox>,
     content: (
       <ContentBox>
-       Khlros, or green coin will be the digital currency that connects growers and gardeners all around the world through sustainability. You can your digital NFT garden to mint khrlos daily. Subscription required
+        Khlros, or green coin will be the digital currency that connects growers and gardeners all
+        around the world through sustainability. You can your digital NFT garden to mint khrlos
+        daily. Subscription required
       </ContentBox>
     ),
     placement: "right",
@@ -86,32 +92,12 @@ export const phantomStep = [
   },
   {
     target: ".waterGraph",
-    title: <TitleBox> Notify Seller </TitleBox>,
+    title: <TitleBox> Water Level Graph</TitleBox>,
     content: (
       <ContentBox>
-        After you have successfully made payment, click on NOTIFY SELLER so that
-        the system will pass the message across. Before payments are made, you
-        can cancel i you found trade unsuitable.
-      </ContentBox>
-    ),
-    placement: "right",
-    locale: {
-      next: <NextBtn />,
-      back: <BackBtn />,
-      close: <CloseBtn />,
-      last: <DoneBtn />,
-      skip: <SkipBtn />,
-    },
-  },
-  
-  {
-    target: ".humidityGraph",
-    title: <TitleBox> Coin Release and Dispute</TitleBox>,
-    content: (
-      <ContentBox>
-        The system will release the token immediately the seller approves
-        payments from you. Else, you can start disputes in case the trade goes
-        wrong.
+        Use the water level graph to monitor the real time water level of your bucket or reservoir.
+        You can use the Garden Doctor settings on the data tab to set your water level range and
+        allow the doctor to do the rest.
       </ContentBox>
     ),
     placement: "right",
@@ -124,17 +110,10 @@ export const phantomStep = [
     },
   },
 
- 
-
   {
-    target: ".temperatureGraph",
-    title: <TitleBox> Transaction Complete!</TitleBox>,
-    content: (
-      <ContentBox>
-        If there's no dispute between you and the vendors, the system releases
-        the tokens to your wallet immediately to mark the trade was completed.
-      </ContentBox>
-    ),
+    target: ".dataInput",
+    title: <TitleBox> Add Your Mac Address</TitleBox>,
+    content: <ContentBox></ContentBox>,
     locale: {
       next: <NextBtn />,
       back: <BackBtn />,
@@ -144,14 +123,9 @@ export const phantomStep = [
     },
   },
   {
-    target: ".phGraph",
-    title: <TitleBox> Transaction Complete!</TitleBox>,
-    content: (
-      <ContentBox>
-        If there's no dispute between you and the vendors, the system releases
-        the tokens to your wallet immediately to mark the trade was completed.
-      </ContentBox>
-    ),
+    target: ".showMacAddress",
+    title: <TitleBox>Mac Address Shows here</TitleBox>,
+    content: <ContentBox></ContentBox>,
     locale: {
       next: <NextBtn />,
       back: <BackBtn />,
@@ -160,16 +134,10 @@ export const phantomStep = [
       skip: <SkipBtn />,
     },
   },
-  
   {
-    target: ".ecGraph",
-    title: <TitleBox> Transaction Complete!</TitleBox>,
-    content: (
-      <ContentBox>
-        If there's no dispute between you and the vendors, the system releases
-        the tokens to your wallet immediately to mark the trade was completed.
-      </ContentBox>
-    ),
+    target: ".statusOfConnection",
+    title: <TitleBox>Status of Connection</TitleBox>,
+    content: <ContentBox></ContentBox>,
     locale: {
       next: <NextBtn />,
       back: <BackBtn />,
@@ -177,6 +145,17 @@ export const phantomStep = [
       last: <DoneBtn />,
       skip: <SkipBtn />,
     },
-  }
-  
+  },
+  {
+    target: ".addExtraData",
+    title: <TitleBox>Add Extra Data</TitleBox>,
+    content: <ContentBox></ContentBox>,
+    locale: {
+      next: <NextBtn />,
+      back: <BackBtn />,
+      close: <CloseBtn />,
+      last: <DoneBtn />,
+      skip: <SkipBtn />,
+    },
+  },
 ];

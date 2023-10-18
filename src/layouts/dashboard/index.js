@@ -25,6 +25,7 @@ import { useMaterialUIController } from "context";
 import AnimatedProgressProvider from "./components/AnimatedProgressProvider";
 import { phantomStep } from "components/onboarding/PhantomStep";
 import WelcomeModal from "components/onboarding/WelcomeModal";
+import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
   const [socket, setSocket] = useState(null);
@@ -73,7 +74,7 @@ function Dashboard() {
       return 'Invalid unit. Please use "inches" or "cm".';
     }
   }
-
+  const navigate = useNavigate();
   useEffect(() => {
     const interval = setInterval(() => {
       const getMacDetails = async () => {
@@ -305,6 +306,10 @@ function Dashboard() {
     setECData(res.data.ecToken ? { labels: newTime, datasets: ecDataset } : {});
     setWaterData(res.data.waterToken ? { labels: newTime, datasets: waterDataset } : {});
   };
+  const handleTourEnd = () => {
+    // This function will be called when the tour ends
+    navigate("/data"); // Redirect to another page
+  };
 
   return (
     <>
@@ -316,6 +321,11 @@ function Dashboard() {
         scrollToFirstStep={true}
         showSkipButton={true}
         //callback={handleStepComplete}
+        callback={({ status }) => {
+          if (status === "finished") {
+            handleTourEnd();
+          }
+        }}
         styles={{
           options: {
             arrowColor: "#319EF6",
@@ -408,11 +418,13 @@ function Dashboard() {
                   id="container"
                   style={{
                     paddingLeft: "20px",
+                    paddingBottom: "20px",
                     display: "flex",
                     flexDirection: "column",
                     justifyContent: "center",
                     alignItems: "center",
                   }}
+                  className="waterGraph"
                 >
                   <h2>Water level</h2>
                   <MDBox
@@ -424,7 +436,7 @@ function Dashboard() {
                         height: "80%",
                         width: "80%",
                       },
-                    }} className="waterGraph"
+                    }}
                   >
                     <AnimatedProgressProvider
                       valueStart={0}
